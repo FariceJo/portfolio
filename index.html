@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Анастасия Ярош — Project Manager</title>
+<meta name="description" content="Анастасия Ярош — project manager в FMCG: управление проектами, координация команд, организация процессов.">
+<meta property="og:title" content="Анастасия Ярош — Project Manager">
+<meta property="og:description" content="Управление проектами, координация команд и организация процессов в FMCG.">
+<meta property="og:image" content="https://yarosh-anastasia.ru/img/photo.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f3d36'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='28' fill='%23f3efe6' text-anchor='middle'%3EAЯ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f3ec; --surface:#fffdf8; --ink:#1b1f1d; --muted:#5d655f; --line:#e3ded2;
+  --accent:#1f3d36; --accent-2:#2f6b5b; --chip:#e9efe9; --on-accent:#f6f3ec;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#121614; --surface:#1a1f1c; --ink:#ecebe5; --muted:#a2aaa4; --line:#2a312d;
+    --accent:#9ccbb8; --accent-2:#7fb8a3; --chip:#223029; --on-accent:#10201b;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Manrope,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
+.logo{font-weight:800;text-decoration:none;letter-spacing:-.01em}
+.nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:15px;color:var(--muted)}
+.nav ul a{text-decoration:none}
+.nav ul a:hover{color:var(--ink)}
+
+/* hero */
+.hero{padding:72px 0 56px}
+.hero .wrap{display:grid;grid-template-columns:1.35fr 1fr;gap:56px;align-items:center}
+.eyebrow{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-2);margin-bottom:14px}
+h1{font-size:clamp(40px,6vw,68px);line-height:1.02;letter-spacing:-.03em;margin:0 0 20px;font-weight:800}
+.lead{font-size:19px;color:var(--muted);max-width:560px;margin:0 0 28px}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;border:1.5px solid var(--accent);transition:transform .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:var(--accent);color:var(--on-accent)}
+.contacts{display:flex;flex-wrap:wrap;gap:10px}
+.contacts a{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:14px;text-decoration:none;color:var(--muted)}
+.contacts a:hover{color:var(--ink);border-color:var(--accent-2)}
+.contacts svg{width:16px;height:16px;fill:currentColor}
+.photo{position:relative;justify-self:end;width:100%;max-width:380px}
+.photo img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-position:50% 30%;object-fit:cover;border-radius:28px}
+.photo::before{content:"";position:absolute;inset:18px -18px -18px 18px;border-radius:28px;background:var(--accent);opacity:.12;z-index:-1}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px 22px}
+.stat b{display:block;font-size:30px;letter-spacing:-.02em;color:var(--accent)}
+.stat span{font-size:14px;color:var(--muted)}
+
+/* sections */
+section{padding:56px 0}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin-bottom:28px;flex-wrap:wrap}
+h2{font-size:clamp(28px,4vw,40px);letter-spacing:-.02em;margin:0;line-height:1.1}
+.sec-note{color:var(--muted);max-width:520px;margin:0;font-size:15px}
+h3{font-size:19px;margin:0 0 8px;letter-spacing:-.01em}
+
+.timeline{display:grid;gap:14px}
+.job{display:grid;grid-template-columns:220px 1fr;gap:24px;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px 28px}
+.job .co{font-weight:800;font-size:20px}
+.job .role{color:var(--accent-2);font-weight:600;font-size:14px}
+.job p{margin:0;color:var(--muted)}
+
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px 28px}
+.card p{margin:0;color:var(--muted);font-size:16px}
+.card .num{font-size:13px;font-weight:700;color:var(--accent-2);letter-spacing:.06em;margin-bottom:10px;display:block}
+.hl{background:var(--chip);color:var(--ink);padding:1px 6px;border-radius:6px;font-weight:600}
+
+.skills{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.skills ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.skills li{font-size:15.5px;color:var(--muted);padding-left:16px;border-left:2px solid var(--line)}
+.skills li b{color:var(--ink);display:block;font-size:16px}
+
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.tool{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px}
+.tool h3{font-size:17px}
+.tool p{margin:0;color:var(--muted);font-size:15px}
+
+.edu{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;list-style:none;margin:0;padding:0}
+.chips li{background:var(--chip);border-radius:12px;padding:10px 14px;font-size:15px}
+.chips li.main{background:var(--accent);color:var(--on-accent);font-weight:700}
+.langs{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.langs li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.langs li span{color:var(--muted)}
+
+.bio{display:grid;grid-template-columns:1fr 1.6fr;gap:48px;align-items:start}
+.bio p{margin:0 0 16px;color:var(--muted)}
+.bio blockquote{margin:0;font-size:24px;line-height:1.35;font-weight:700;letter-spacing:-.01em;color:var(--accent)}
+
+.cta{background:var(--accent);color:var(--on-accent);border-radius:28px;padding:48px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;margin:24px 0 56px}
+.cta h2{color:var(--on-accent)}
+.cta p{margin:8px 0 0;opacity:.8}
+.cta .btn{background:var(--on-accent);color:var(--accent);border-color:var(--on-accent)}
+
+footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);font-size:14px}
+
+@media (max-width:900px){
+  .nav ul{display:none}
+  .hero{padding:40px 0 32px}
+  .hero .wrap{grid-template-columns:1fr;gap:32px}
+  .photo{justify-self:start;max-width:220px;order:-1}
+  .job{grid-template-columns:1fr;gap:8px}
+  .cards,.skills,.edu,.bio{grid-template-columns:1fr}
+  .tools{grid-template-columns:1fr 1fr}
+  .bio{gap:24px}
+}
+@media (max-width:560px){
+  .wrap{padding:0 16px}
+  body{font-size:16px}
+  .stats{grid-template-columns:1fr}
+  .tools{grid-template-columns:1fr}
+  .card,.job{padding:22px}
+  .cta{padding:32px 24px}
+  section{padding:40px 0}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top">Анастасия Ярош</a>
+    <ul>
+      <li><a href="#experience">Опыт</a></li>
+      <li><a href="#projects">Проекты</a></li>
+      <li><a href="#skills">Навыки</a></li>
+      <li><a href="#tools">Инструменты</a></li>
+      <li><a href="#about">Обо мне</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Project manager · FMCG · маркетинг</span>
+      <h1>Анастасия Ярош</h1>
+      <p class="lead">Я project manager с опытом работы 2 года в сфере FMCG, где развивалась в рамках маркетингового отдела. Занимаюсь управлением проектами, координацией команд и организацией процессов для достижения бизнес-результатов. На данный момент рассматриваю удалённый формат работы, предпочтительно в FMCG.</p>
+      <div class="actions">
+        <a class="btn primary" href="https://drive.google.com/drive/folders/1BhFISw4PEO1c2PV-rmiK32Fu-ZwmIEDW?usp=sharing" target="_blank" rel="noopener">Скачать CV</a>
+        <a class="btn" href="https://t.me/faricejo" target="_blank" rel="noopener">Написать в Telegram</a>
+      </div>
+      <div class="contacts">
+        <a href="tel:+79525666325"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>+7 952 566-63-25</a>
+        <a href="mailto:yaroshanastasya@yandex.ru"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5z"/></svg>yaroshanastasya@yandex.ru</a>
+        <a href="https://wa.me/79525666325" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.5.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.1 1.3.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.1.1.6-.1 1.2z"/></svg>WhatsApp</a>
+        <a href="https://t.me/faricejo" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21.9 4.3 18.8 19c-.2 1-.8 1.3-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-1 .5l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2L7 13l-4.6-1.4c-1-.3-1-1 .2-1.5L20.5 3c.8-.3 1.6.2 1.4 1.3z"/></svg>Telegram</a>
+        <a href="https://hh.ru/resume/5a8b05d4ff0c7ad7dc0039ed1f423066654a45" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M4 5h2.4v5c.9-1 2-1.6 3.4-1.6 2.3 0 3.2 1.5 3.2 3.8V19h-2.4v-6.4c0-1.2-.5-2-1.6-2-1.5 0-2.6 1.2-2.6 3V19H4zm9.6 0H16v5c.9-1 2-1.6 3.4-1.6 2.3 0 3.2 1.5 3.2 3.8V19h-2.4v-6.4c0-1.2-.5-2-1.6-2-1.5 0-2.6 1.2-2.6 3V19h-2.4z"/></svg>hh.ru</a>
+      </div>
+    </div>
+    <div class="photo"><img src="img/photo.jpg" alt="Анастасия Ярош" width="760" height="946"></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="stats">
+    <div class="stat"><b>2 года</b><span>в проектном управлении в FMCG и сервисе</span></div>
+    <div class="stat"><b>33 ₽</b><span>стоимость лида в Plonq Link при рынке 50–300+ ₽</span></div>
+    <div class="stat"><b>−40%</b><span>времени на адаптацию и обучение сотрудников</span></div>
+  </div>
+</div>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head"><h2>Опыт работы</h2></div>
+    <div class="timeline">
+      <article class="job">
+        <div><div class="co">Plonq</div><div class="role">Проектный менеджер</div></div>
+        <p>Работаю проектным менеджером в отделе активаций, который входит в структуру маркетинга Plonq — международной быстрорастущей мультибрендовой FMCG-компании. Управляю проектами, собираю аналитические дашборды и помогаю улучшать внутренние бизнес-процессы.</p>
+      </article>
+      <article class="job">
+        <div><div class="co">Blue Swan PC</div><div class="role">Проектный менеджер</div></div>
+        <p>Работала в молодой динамичной компании на этапе активного роста. За 10 месяцев внедрила ключевые процессы с нуля. Мои решения помогли масштабировать сервис, повысить эффективность отделов и укрепить клиентскую лояльность.</p>
+      </article>
+      <article class="job">
+        <div><div class="co">Paper Planes</div><div class="role">Стажёр бизнес-аналитик</div></div>
+        <p>Проходила стажировку в консалтинговой компании. Научилась проводить комплексный анализ рынков и компаний. Результаты моих исследований использовались в проектах по оптимизации бизнес-процессов заказчиков.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Ключевые проекты Plonq</h2>
+      <p class="sec-note">Это далеко не полный список, а проекты, в которых мой вклад как PM был наиболее значимым для бизнес-результатов.</p>
+    </div>
+    <div class="cards">
+      <article class="card"><span class="num">01</span><h3>Экопроект на День Земли</h3><p>Совместно с Trade Marketing участвовала в запуске экопроекта ко Дню Земли, направленного на повышение знания об экологической инициативе Plonq и вовлечение пользователей в сдачу устройств на переработку. Проект объединил офлайн-механику в партнёрских точках, digital-поддержку, рассылки, посевы, работу с блогерами и геймификацию в B2C-боте. В результате была запущена единая коммуникационная механика, которая связала digital-каналы и офлайн-активацию в рамках одного проекта.</p></article>
+      <article class="card"><span class="num">02</span><h3>Insight Community</h3><p>Совместно с отделом инсайтов запустили закрытое комьюнити для аудитории из сферы, в которое пользователи попадали через анкету в боте. Проект позволил сформировать базу респондентов для исследований, снизить стоимость исследований и увеличить количество собираемых инсайтов с рынка.</p></article>
+      <article class="card"><span class="num">03</span><h3>Запуск программы лидогенерации Plonq Link</h3><p>Реализовали программу лидогенерации Plonq Link в рамках программы мотивации с привлечением пользователей в Telegram-бот. Проект показал высокую эффективность: <span class="hl">стоимость лида составила 33 рубля</span> при средней рыночной цене от 50 до 300+ рублей, а более половины аудитории оставались в боте.</p></article>
+      <article class="card"><span class="num">04</span><h3>Pre-launch кампания бренда</h3><p>Участвовала в запуске большой pre-launch кампании перед выпуском нового бренда, нацеленной на рост узнаваемости с нуля. В рамках проекта были реализованы геймификации на сайте, баннерное и digital-продвижение, таргетированная реклама, посевы и другие инструменты охватной кампании.</p></article>
+      <article class="card"><span class="num">05</span><h3>Автоматизация сбора метрик</h3><p>Разработала систему дашбордов для автоматизированного и полуавтоматизированного сбора метрик по направлениям customer service, SMM, CRM marketing, web development и influence marketing. Также создала общий дашборд отдела с ключевыми метриками для анализа результатов команды в целом. Проект позволил повысить прозрачность аналитики, улучшить контроль показателей и сделать работу с данными более системной.</p></article>
+      <article class="card"><span class="num">06</span><h3>Новогодняя кампания</h3><p>Реализовали комплексную новогоднюю кампанию Plonq, объединив digital-активации и партнёрские коллаборации. В рамках проекта запустили адвент-календарь на сайте, крупные розыгрыши, продвижение в онлайн-каналах, посевы, статьи и механику со скретч-картой в программе мотивации.</p></article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Основные проекты Blue Swan PC</h2>
+      <p class="sec-note">Кейсы, которые лучше всего отражают мой подход к управлению и достижению результата.</p>
+    </div>
+    <div class="cards">
+      <article class="card"><span class="num">01</span><h3>Внедрение отдела клиентского сервиса (Post-Sales)</h3><p>Организовала отдел постпродажной поддержки для повышения лояльности клиентов и снижения нагрузки на отдел продаж. В результате был повышен уровень сервиса и показатель NPS.</p></article>
+      <article class="card"><span class="num">02</span><h3>Запуск программы лояльности</h3><p>Организовала end-to-end процесс запуска: подбор подрядчиков, согласование макетов, внедрение механик, интеграция с системой учёта. В результате выявлен рост повторных продаж, среднего чека и повышение retention.</p></article>
+      <article class="card"><span class="num">03</span><h3>Оптимизация CRM для отдела продаж</h3><p>Выявила узкие места, привлекла интеграторов для разработки, внедрила систему контроля и удобную отчётность, внедрила обучение для менеджеров. В результате было сокращено время заполнения карточек, ускорено время ответа клиентам, устранена проблема с потерей клиентов.</p></article>
+      <article class="card"><span class="num">04</span><h3>Оптимизация адаптации и обучения сотрудников</h3><p>Разработала структурированную программу обучения, внедрила систему тестирования, создала регламенты и чек-листы для новых сотрудников. В результате <span class="hl">время на обучение и адаптацию снизилось на 40%</span>.</p></article>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head"><h2>Профессиональные навыки</h2></div>
+    <div class="skills">
+      <div class="card">
+        <span class="num">HARD SKILLS</span>
+        <ul>
+          <li><b>Планирование и ведение проектов end-to-end</b>формирование roadmap, milestone plan и critical path, контроль сроков, статусов и исполнения задач</li>
+          <li><b>Постановка и декомпозиция задач</b>ведение backlog и action log, координация задач в Jira и Asana, контроль исполнения</li>
+          <li><b>Проектная коммуникация и отчётность</b>подготовка статус-репортов, протоколов встреч, follow-up, проведение project и steering meetings с фиксацией решений</li>
+          <li><b>Аналитика и визуализация данных</b>продвинутая работа в Google Sheets, включая Apps Script, подготовка KPI-дашбордов и отчётности в Looker Studio</li>
+          <li><b>Ведение проектной документации и базы знаний</b>подготовка и актуализация проектной документации, структурирование материалов в Confluence, создание чек-листов запуска</li>
+          <li><b>Координация кросс-функционального взаимодействия</b>работа с командами marketing, R&amp;D, supply chain, procurement и finance в рамках проектных инициатив</li>
+          <li><b>Взаимодействие с подрядчиками и внешними партнёрами</b>координация задач, сопровождение проектной реализации и контроль статусов</li>
+          <li><b>Понимание процессов маркетингового отдела в FMCG</b>планирование и сопровождение запусков, координация упаковочных изменений, промо-инициатив и взаимодействие со смежными функциями для своевременного вывода продукта на рынок</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="num">SOFT SKILLS</span>
+        <ul>
+          <li><b>Стратегическое и системное мышление</b>умение видеть взаимосвязи между задачами, процессами и бизнес-целями, определять приоритеты и принимать решения с учётом общего контекста</li>
+          <li><b>Коммуникация и управление стейкхолдерами</b>выстраивание эффективного взаимодействия со смежными командами и заинтересованными сторонами, чёткая письменная и устная коммуникация, своевременная эскалация вопросов и рисков</li>
+          <li><b>Лидерство и командное взаимодействие</b>организация совместной работы, выравнивание команд по целям и задачам, поддержание продуктивного взаимодействия и фокуса на результате</li>
+          <li><b>Фасилитация встреч и координация обсуждений</b>проведение рабочих встреч, структурирование диалога, фиксация договорённостей и сопровождение команд к принятию решений</li>
+          <li><b>Навыки переговоров и разрешения конфликтов</b>поиск сбалансированных решений, аргументированное отстаивание позиции, снижение напряжения и выстраивание конструктивного взаимодействия</li>
+          <li><b>Самостоятельность и проактивность</b>инициативный подход к задачам, готовность брать ответственность, предлагать решения и двигать процессы вперёд</li>
+          <li><b>Организованность и исполнительская дисциплина</b>системный подход к работе, соблюдение договорённостей, контроль задач и внимание к деталям</li>
+          <li><b>Гибкость в работе с приоритетами</b>способность быстро адаптироваться к изменениям, перестраивать фокус и сохранять эффективность в динамичной среде</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tools">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Стек инструментов</h2>
+      <p class="sec-note">Не полный перечень, а часть стека, который я регулярно использую в проектной работе.</p>
+    </div>
+    <div class="tools">
+      <div class="tool"><h3>Jira / Asana</h3><p>Ведение и контроль проектов, постановка и трекинг задач, координация командной работы. Сначала работа велась в Asana, затем процессы были перенесены в Jira.</p></div>
+      <div class="tool"><h3>Confluence</h3><p>Ведение и актуализация проектной документации, чек-листы запусков, описание рабочих процессов и структурирование информации, которой команда отдела пользовалась в ежедневной работе.</p></div>
+      <div class="tool"><h3>Robobill</h3><p>Настройка и ведение программы мотивации: новые механики, изменение блоков на сайте через конструктор, актуальность конфигурации и выгрузки для анализа результатов.</p></div>
+      <div class="tool"><h3>Usedesk</h3><p>Настройка и развитие сервисных процессов customer service: новые каналы коммуникации, автоматизации, сбор CSI, система тегов и необходимые интеграции.</p></div>
+      <div class="tool"><h3>Botmother</h3><p>Настройка и сопровождение чат-ботов компании: сценарии под разные задачи, пользовательские логики, опросы и анализ статистики по экранам и прохождению сценариев.</p></div>
+      <div class="tool"><h3>Miro</h3><p>Совместная проработка проектных задач: CJM, визуализация roadmap и синхронизация команд в понимании процессов, этапов и зон ответственности.</p></div>
+      <div class="tool"><h3>Google Sheets / Apps Script / Looker Studio</h3><p>Работа с данными и автоматизация процессов: логика таблиц, сложные формулы и скрипты, визуализации и дашборды для мониторинга ключевых показателей.</p></div>
+      <div class="tool"><h3>Figma</h3><p>Базовый уровень: работа с макетами и материалами команды дизайна, ориентация в структуре экранов и использование макетов в проектной работе.</p></div>
+      <div class="tool"><h3>AI tools</h3><p>Обработка информации, подготовка материалов и оптимизация рутинных процессов с соблюдением внутренних требований к данным и безопасности.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="edu">
+      <div class="card">
+        <span class="num">ОБРАЗОВАНИЕ</span>
+        <ul class="chips">
+          <li class="main">Финансы и кредит — Университет «Синергия»</li>
+          <li>Проектное управление — Plonq</li>
+          <li>Digital and Performance Marketing — CXL</li>
+          <li>Английский — Skyeng</li>
+          <li>Excel — Бруноям</li>
+          <li>Power BI — Бруноям</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="num">ЯЗЫКИ</span>
+        <ul class="langs">
+          <li>Английский <span>Upper-Intermediate (B2)</span></li>
+          <li>Русский <span>Родной</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="bio">
+      <div>
+        <div class="sec-head"><h2>Биография</h2></div>
+        <blockquote>Моя цель — расти как project manager и участвовать в масштабных маркетинговых запусках.</blockquote>
+      </div>
+      <div>
+        <p>Я родилась и выросла в Донецке. Со школы проявляла технический склад ума, что помогло мне с отличием окончить лицей в группе с информационно-математическим уклоном. Глубокое погружение в программирование в те годы научило меня структурному мышлению, логике решения задач и вниманию к деталям — качествам, которые сегодня я успешно применяю в проектном менеджменте.</p>
+        <p>После лицея я переехала в Москву для получения высшего образования. Именно в университете я открыла для себя сферу управления проектами. Меня привлекла возможность организовывать процессы, работать с командами и видеть результат совместных усилий. Уже на этом этапе я начала применять свои аналитические способности на практике, получив первый опыт работы в роли PM.</p>
+        <p>Сегодня я вижу своё дальнейшее развитие в проектном менеджменте в сфере маркетинга. Мне интересно работать с комплексными проектами, которые требуют координации разных команд, внимательного планирования и ориентации на результат. Моя цель — расти как project manager, участвовать в масштабных маркетинговых запусках и развивать экспертизу в управлении проектами внутри сильной, динамичной команды.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="cta">
+    <div>
+      <h2>Готова к новым проектам!</h2>
+      <p>Пишите, чтобы обсудить сотрудничество.</p>
+    </div>
+    <a class="btn" href="https://t.me/faricejo" target="_blank" rel="noopener">Написать в Telegram</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">© 2026 Анастасия Ярош · <a href="mailto:yaroshanastasya@yandex.ru">yaroshanastasya@yandex.ru</a></div>
+</footer>
+
+</body>
+</html>
