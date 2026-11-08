@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Анастасия Ярош — Project Manager</title>
-<meta name="description" content="Анастасия Ярош — project manager в FMCG: управление проектами, координация команд, организация процессов.">
-<meta property="og:title" content="Анастасия Ярош — Project Manager">
-<meta property="og:description" content="Управление проектами, координация команд и организация процессов в FMCG.">
+<title>Анастасия Ярош — AI-автоматизация бизнес-процессов</title>
+<meta name="description" content="Анастасия Ярош — автоматизация бизнес-процессов с помощью AI: AI-агенты, боты, интеграции и пайплайны данных.">
+<meta property="og:title" content="Анастасия Ярош — AI-агенты и автоматизация процессов">
+<meta property="og:description" content="AI-агенты, боты, интеграции и пайплайны данных для бизнес-процессов.">
 <meta property="og:image" content="https://yarosh-anastasia.ru/photo.jpg">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f3d36'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='28' fill='%23f3efe6' text-anchor='middle'%3EAЯ%3C/text%3E%3C/svg%3E">
@@ -129,6 +129,56 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
   .cta{padding:32px 24px}
   section{padding:40px 0}
 }
+
+/* cases */
+.cases{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.case{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:28px;display:flex;flex-direction:column;gap:18px}
+.case.featured{grid-column:1/-1;border-color:color-mix(in srgb,var(--accent) 35%,var(--line))}
+.case.featured .case-body{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.case-head h3{font-size:22px;margin:6px 0 0}
+.tag{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-2)}
+.case-body{display:grid;gap:14px}
+.cb p b{color:var(--ink)}
+.cb p{margin:0;color:var(--muted);font-size:15.5px}
+.cl{display:block;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);margin-bottom:4px}
+.stack{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:auto 0 0;padding:0}
+.stack li{font-size:13px;padding:5px 10px;border-radius:8px;background:var(--chip);color:var(--ink)}
+.mini{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.mini-item{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px}
+.mini-item b{display:block;font-size:16.5px;margin-bottom:6px}
+.mini-item p{margin:0;color:var(--muted);font-size:15px}
+@media (max-width:900px){.cases{grid-template-columns:1fr}.case.featured .case-body{grid-template-columns:1fr}.mini{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.mini{grid-template-columns:1fr}.case{padding:22px}}
+
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;counter-reset:st}
+.steps li{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;counter-increment:st}
+.steps li::before{content:counter(st,decimal-leading-zero);display:block;font-size:13px;font-weight:800;color:var(--accent-2);margin-bottom:8px}
+.steps b{display:block;font-size:16.5px;margin-bottom:4px}
+.steps span{color:var(--muted);font-size:15px}
+.stack-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.sg{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px}
+.sg .cl{margin-bottom:10px}
+@media (max-width:900px){.steps,.stack-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.steps,.stack-grid{grid-template-columns:1fr}}
+
+.case.featured .case-body.quad{grid-template-columns:repeat(2,1fr);gap:20px 28px}
+.case-result{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;padding:20px 22px;border-radius:16px;background:var(--chip)}
+.case-result p{margin:0;font-size:15.5px}
+.roadmap{margin:0;padding-left:18px;font-size:15px;color:var(--muted);display:grid;gap:4px}
+@media (max-width:900px){.case.featured .case-body.quad,.case-result{grid-template-columns:1fr}}
+
+.case-result{grid-template-columns:1fr!important}
+.case-next{padding:18px 22px;border-radius:16px;border:1px dashed color-mix(in srgb,var(--accent) 40%,var(--line))}
+.case-next .roadmap{margin-top:6px}
+
+.kb-card{background:color-mix(in srgb,var(--accent) 6%,var(--surface))}
+.case-kb{padding:18px 22px;border-radius:16px;background:color-mix(in srgb,var(--accent) 7%,var(--surface));border:1px solid color-mix(in srgb,var(--accent) 20%,var(--line))}
+.case-kb p{margin:0;color:var(--muted);font-size:15.5px}
+.cases>.case:not(.featured):last-child:nth-child(odd){grid-column:1/-1}
+.dir{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--muted);font-size:15.5px}
+.dir b{color:var(--ink)}
+.cases-note{margin:22px 0 0;color:var(--muted);font-size:15.5px;text-align:center}
+.period{font-size:14px;color:var(--muted);margin-top:4px}
 </style>
 </head>
 <body>
@@ -137,10 +187,10 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
   <div class="wrap">
     <a class="logo" href="#top">Анастасия Ярош</a>
     <ul>
+      <li><a href="#stack">Стек</a></li>
+      <li><a href="#cases">Кейсы</a></li>
+      <li><a href="#approach">Как я работаю</a></li>
       <li><a href="#experience">Опыт</a></li>
-      <li><a href="#projects">Проекты</a></li>
-      <li><a href="#skills">Навыки</a></li>
-      <li><a href="#tools">Инструменты</a></li>
       <li><a href="#about">Обо мне</a></li>
     </ul>
   </div>
@@ -149,17 +199,16 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
 <header class="hero" id="top">
   <div class="wrap">
     <div>
-      <span class="eyebrow">Project manager · FMCG · маркетинг</span>
+      <span class="eyebrow">LLM · AI-агенты · RAG · Автоматизация</span>
       <h1>Анастасия Ярош</h1>
-      <p class="lead">Я project manager с опытом работы 2 года в сфере FMCG, где развивалась в рамках маркетингового отдела. Занимаюсь управлением проектами, координацией команд и организацией процессов для достижения бизнес-результатов. На данный момент рассматриваю удалённый формат работы, предпочтительно в FMCG.</p>
+      <p class="lead">Создаю AI-агентов и LLM-инструменты, которые работают в реальных процессах компании. Веду решение от разбора процесса до ежедневного использования — с интеграциями, контролем качества и человеком в контуре. Сильная техническая база в сочетании с опытом проектного менеджмента: понимаю, как устроен бизнес и его процессы изнутри, — и сама могу их автоматизировать.</p>
       <div class="actions">
-        <a class="btn primary" href="https://drive.google.com/drive/folders/1BhFISw4PEO1c2PV-rmiK32Fu-ZwmIEDW?usp=sharing" target="_blank" rel="noopener">Скачать CV</a>
+        <a class="btn primary" href="#cases">Смотреть кейсы</a>
         <a class="btn" href="https://t.me/faricejo" target="_blank" rel="noopener">Написать в Telegram</a>
       </div>
       <div class="contacts">
         <a href="tel:+79525666325"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>+7 952 566-63-25</a>
         <a href="mailto:yaroshanastasya@yandex.ru"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5z"/></svg>yaroshanastasya@yandex.ru</a>
-        <a href="https://wa.me/79525666325" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.5.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.1 1.3.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.1.1.6-.1 1.2z"/></svg>WhatsApp</a>
         <a href="https://t.me/faricejo" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21.9 4.3 18.8 19c-.2 1-.8 1.3-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-1 .5l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2L7 13l-4.6-1.4c-1-.3-1-1 .2-1.5L20.5 3c.8-.3 1.6.2 1.4 1.3z"/></svg>Telegram</a>
         <a href="https://hh.ru/resume/5a8b05d4ff0c7ad7dc0039ed1f423066654a45" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M4 5h2.4v5c.9-1 2-1.6 3.4-1.6 2.3 0 3.2 1.5 3.2 3.8V19h-2.4v-6.4c0-1.2-.5-2-1.6-2-1.5 0-2.6 1.2-2.6 3V19H4zm9.6 0H16v5c.9-1 2-1.6 3.4-1.6 2.3 0 3.2 1.5 3.2 3.8V19h-2.4v-6.4c0-1.2-.5-2-1.6-2-1.5 0-2.6 1.2-2.6 3V19h-2.4z"/></svg>hh.ru</a>
       </div>
@@ -168,118 +217,234 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
   </div>
 </header>
 
-<div class="wrap">
-  <div class="stats">
-    <div class="stat"><b>2 года</b><span>в проектном управлении в FMCG и сервисе</span></div>
-    <div class="stat"><b>33 ₽</b><span>стоимость лида в Plonq Link при рынке 50–300+ ₽</span></div>
-    <div class="stat"><b>−40%</b><span>времени на адаптацию и обучение сотрудников</span></div>
+
+<section id="stack">
+  <div class="wrap">
+    <div class="sec-head"><h2>Стек</h2></div>
+    <div class="stack-grid">
+      <div class="sg"><span class="cl">AI и LLM</span><ul class="stack"><li>Claude / Claude API</li><li>ChatGPT</li><li>Claude Agent SDK</li><li>Codex</li><li>AssemblyAI</li><li>pyannoteAI</li></ul></div>
+      <div class="sg"><span class="cl">Автоматизация</span><ul class="stack"><li>n8n</li><li>Google Apps Script</li><li>Jira Automation</li><li>Botmother</li></ul></div>
+      <div class="sg"><span class="cl">Данные</span><ul class="stack"><li>SQL</li><li>PostgreSQL</li><li>Python</li><li>DuckDB</li><li>Google Sheets</li></ul></div>
+      <div class="sg"><span class="cl">Интеграции</span><ul class="stack"><li>REST API</li><li>Webhooks</li><li>Telegram Bot API</li><li>Mindbox</li><li>Usedesk</li><li>Robobill</li></ul></div>
+      <div class="sg"><span class="cl">BI и аналитика</span><ul class="stack"><li>Power BI</li><li>Looker Studio</li><li>Яндекс.Метрика</li></ul></div>
+      <div class="sg"><span class="cl">Процессы и документация</span><ul class="stack"><li>Jira (админ)</li><li>Confluence</li><li>Miro</li><li>Obsidian</li></ul></div>
+    </div>
   </div>
-</div>
+</section>
+
+<section id="cases">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Кейсы автоматизации</h2>
+      <p class="sec-note">Что было устроено вручную, какое решение я собрала и что это дало. Стек — в конце каждой карточки.</p>
+    </div>
+
+    <div class="cases">
+
+      <article class="case featured">
+        <div class="case-head">
+          <span class="tag">AI-агент · RAG · human-in-the-loop</span>
+          <h3>AI-агент черновиков ответов для службы поддержки</h3>
+        </div>
+        <div class="case-body quad">
+          <div class="cb"><span class="cl">Было</span><p>Поддержка вручную отвечает на однотипные вопросы о программе мотивации и устройствах: чеки, начисления, вывод баллов, неисправности. Условия программы регулярно меняются, а старые шаблоны противоречат друг другу, поэтому ошибиться легко.</p><p style="margin-top:10px">По обращениям о программе мотивации сотрудникам приходилось перед ответом вручную выгружать чеки, механики и начисления участника, сопоставлять их, пересчитывать и разбираться, что произошло.</p><p style="margin-top:10px">Поддержка работает 5/2 с 10:00 до 19:00, поэтому по утрам, в понедельник после выходных, после праздников и во время отпусков сотрудников копились очереди обращений — и в эти периоды проседали метрики поддержки.</p></div>
+          <div class="cb"><span class="cl">Данные и база знаний</span><p>Обработала историю обращений: <span class="hl">33,8 тыс.</span> тикетов и 266 тыс. сообщений после очистки от служебных. Разметила их по брендам и темам, связала с оценками CSI как сигналом качества и отобрала эталонные ответы из свежих обращений по разным каналам. Собрала из этого методичку по процессам, библиотеку проверенных примеров тона и реестр «фактов, которые нужно перепроверять» — условий, которые меняются со временем. Правила программы мотивации регулярно обновлялись, поэтому база знаний обновлялась вместе с ними: агент опирается на актуальные условия, а не на устаревшие шаблоны и старые ответы.</p></div>
+          <div class="cb"><span class="cl">Как работает агент</span><p>Читает переписку целиком и находит последний нерешённый вопрос. Определяет бренд и процесс, через векторный поиск (RAG, embeddings) находит по смыслу нужный раздел методички, актуальные правила и самые похожие прошлые диалоги с хорошими оценками — даже если клиент написал сумбурно или другими словами — и ссылается на источник. По вопросам программы мотивации агент сам собирает данные участника в промо-системе (строго на чтение): чеки, механики, начисления и заявки на вывод. Затем сопоставляет их и прикладывает к заметке выгрузку со сводкой, так что сотруднику больше не нужно разбираться вручную. Оставляет сотруднику внутренний черновик: текст для клиента, источники, уверенность и что ещё проверить. Для интеграции собран workflow на n8n: получение обращений и запись внутреннего комментария через API Usedesk.</p><p style="margin-top:10px">Отдельно добилась, чтобы черновики звучали как ответы живых сотрудников: агент опирается на реальные ответы с хорошими оценками клиентов и соблюдает <span class="hl">тон и редполитику каждого бренда</span> — Plonq, ROQY, STELS и QWERTY.</p></div>
+          <div class="cb"><span class="cl">Контроль и качество</span><p>На этой итерации агент работает только как подсказка для сотрудника: черновик появляется во внутреннем комментарии, а клиенту всегда отвечает человек. Агент не обещает начисления или одобрения без подтверждённого факта, а персональные данные клиентов не попадают в базу знаний.</p></div>
+        </div>
+        <div class="case-result">
+          <div><span class="cl">Результат</span><p>За месяц после запуска агента CSI вырос: в B2C — с <span class="hl">75% до 83%</span>, в программе мотивации — с <span class="hl">71% до 86%</span> (сентябрь → октябрь). Сотрудники больше не выгружают и не сверяют данные участника вручную: черновик в тоне бренда и сводка по чекам и начислениям уже ждут их в обращении. Агент готовит черновики в нерабочее время поддержки, чтобы к началу смены очередь была разобрана, а в рабочие часы подключается по запросу при высокой нагрузке.</p><p style="margin-top:10px">История обращений и метрики поддержки теперь регулярно выгружаются в <span class="hl">PostgreSQL</span>. На их основе в еженедельный отчёт отдела добавлена мини-аналитика по обращениям, а по истории работает векторный поиск: агент находит похожие обращения по смыслу, а не по ключевым словам.</p></div>
+          
+        </div>
+        <div class="case-next"><span class="cl">Запланировано на следующую итерацию</span><ul class="roadmap"><li>AI-агент для клиентов в нерабочее время поддержки: помогает сам, пока сотрудники не на смене</li></ul></div>
+        <ul class="stack"><li>LLM (Claude / Codex)</li><li>n8n</li><li>Usedesk API</li><li>Robobill</li><li>Python</li><li>PostgreSQL</li><li>RAG / embeddings</li></ul>
+      </article>
+
+      <article class="case featured kb-card">
+        <div class="case-head">
+          <span class="tag">Фундамент · база знаний</span>
+          <h3>Obsidian — общая память для моих AI-агентов</h3>
+        </div>
+        <div class="case-body quad">
+          <div class="cb"><span class="cl">Что это</span><p>Obsidian — база знаний из связанных Markdown-файлов. В ней я веду всю рабочую документацию, и именно на неё опираются мои агенты: читают оттуда контекст перед работой и сами дописывают новое после. Поэтому знания не теряются в чатах и не зависят от конкретной нейросети.</p></div>
+          <div class="cb"><span class="cl">Что в ней лежит</span><p>Справочник людей с ролями и тем, как их имена искажаются в автоматических расшифровках; словарь терминов, брендов и продуктов; протоколы всех встреч с индексом и реестр проектов со статусами; методичка поддержки и реестр меняющихся правил программы мотивации; документация по ботам, промо-системе, Usedesk и CRM.</p></div>
+          <div class="cb"><span class="cl">Как используют агенты</span><p>Агент поддержки берёт из неё правила, тон брендов и проверенные примеры ответов. Агент протоколов перед расшифровкой подтягивает имена и термины, чтобы правильно распознать запись и не задавать лишних вопросов, а после встречи сам дописывает новых людей, решения и сроки в реестр проектов.</p></div>
+          <div class="cb"><span class="cl">Зачем так</span><p>Каждый следующий запуск точнее предыдущего: база пополняется сама. Знания остаются у команды в читаемом виде — их можно проверить, поправить руками и перенести в Confluence. А любой новый агент сразу получает полный контекст компании.</p></div>
+        </div>
+        <ul class="stack"><li>Obsidian</li><li>Markdown</li><li>Claude Skills</li><li>Confluence</li><li>Google Drive sync</li></ul>
+      </article>
+
+      <article class="case featured">
+        <div class="case-head">
+          <span class="tag">AI-ассистент · Claude Skills · n8n</span>
+          <h3>Автоматические протоколы встреч: от процесса в Claude к Telegram-боту</h3>
+        </div>
+        <div class="case-body quad">
+          <div class="cb"><span class="cl">Было</span><p>Протоколы встреч почти не писались, а если писались — то вручную. Это занимало много времени, а на самой встрече приходилось конспектировать вместо того, чтобы полноценно участвовать в обсуждении. В итоге договорённости, решения и задачи забывались и терялись.</p></div>
+          <div class="cb"><span class="cl">Этап 1. Процесс в Claude</span><p>Собрала полный процесс на навыках Claude. Три раза в будний день агент проверяет календарь Outlook, находит прошедшие встречи без протокола и запись в Teams. Запись расшифровывается в TurboScribe, а непонятные фрагменты — повторно локальной моделью Whisper; говорящих помогают определить подсветка спикеров в видео и голосовые образцы коллег. Затем агент сначала сам ищет ответы в базе знаний Obsidian — кто есть кто, термины, проекты, прошлые встречи — и только то, что осталось непонятным, уточняет у меня: спикеров, цифры, ответственных. После этого пишет протокол по единому шаблону, а всё новое — людей, термины, решения и сроки — сам заносит обратно в Obsidian. PDF после подтверждения отправляется в чат встречи, задачи по запросу заводятся в Jira, статусы всех встреч ведутся в журнале.</p></div>
+          <div class="cb"><span class="cl">Этап 2. Перенос в Telegram</span><p>Чтобы протоколами могли пользоваться коллеги, начала переносить процесс в Telegram-бота на n8n. Боту отправляют запись, он расшифровывает её с разделением по спикерам и подтягивает из базы знаний имена и термины компании. Через Claude API бот задаёт уточняющие вопросы с таймкодом и отрывком записи, затем бот собирает PDF и предлагает разослать его участникам по таблице доступа.</p></div>
+          <div class="cb"><span class="cl">Принципы</span><p>Человек в контуре: протокол не пишется, пока не получены ответы на уточняющие вопросы, и ничего не отправляется без подтверждения. Встречи без записи агент не берёт и ничего не додумывает: если срок или ответственный не названы, так и пишет. Об ошибках бот сообщает сам.</p></div>
+        </div>
+        <div class="case-result">
+          <div><span class="cl">Результат</span><p>Протоколы всех встреч с записью готовятся в едином формате без ручной расшифровки, а решения и задачи сразу попадают в базу знаний в Obsidian и в Jira. В Telegram-боте протокол часовой встречи стоит около <span class="hl">$0,45</span> (расшифровка и LLM). Сейчас бот проходит тестирование.</p></div>
+        </div>
+        <div class="case-next"><span class="cl">Запланировано на следующую итерацию</span><ul class="roadmap"><li>Открыть бота для всего отдела, затем — для всей компании</li></ul></div>
+        <ul class="stack"><li>Claude Skills</li><li>Claude API</li><li>n8n</li><li>Telegram Bot API</li><li>AssemblyAI</li><li>pyannoteAI</li><li>TurboScribe</li><li>Whisper</li><li>Outlook / Teams</li><li>Jira</li><li>PDF.co</li></ul>
+      </article>
+
+
+      <article class="case featured">
+        <div class="case-head">
+          <span class="tag">Данные · пайплайн · запрос топ-менеджмента</span>
+          <h3>Сопоставление баз программы мотивации и отгрузок для оценки программы топ-менеджментом</h3>
+        </div>
+        <div class="case-body quad">
+          <div class="cb"><span class="cl">Зачем</span><p>Топ-менеджмент — директора по маркетингу и продажам — хотел понять, работает ли программа мотивации продавцов: закупают ли точки-участники больше остальных. От ответа зависели судьба программы и её бюджет. Две предыдущие попытки оценки — через финансы и через отгрузки — вывода не дали: без единой базы точек сравнивать было не с чем.</p></div>
+          <div class="cb"><span class="cl">Боли сопоставления</span><p>Общего идентификатора точки между системами нет — только ИНН и адрес свободной строкой. Одна и та же точка записана десятками способов: <span class="hl">1,04 млн</span> записей сводятся всего к 7,8 тыс. реальных адресов. Ошибки и разные форматы («д. 49а/2» и «дом 49а», «ул.» и «пр-кт», корпуса, район вместо города), а в программе участвуют продавцы, которые переходят между точками. Масштаб — ~1,16 млн записей из чеков и 7,2 млн строк отгрузок по ~18,5 тыс. точкам.</p></div>
+          <div class="cb"><span class="cl">Решение</span><p>Собрала пайплайн на Python: адреса нормализуются и ищутся в государственном адресном реестре ГАР (1,6 млн объектов), ключ точки — «ИНН + адресная группа». Цепочка правил доведена до 9-й версии, каждая только повышает точность. Спорные случаи уходят в очередь ручного разбора, а 164 адреса, размеченные вручную, служат эталоном для проверки качества. Кэш уже распознанных адресов позволяет каждую ночь обрабатывать только новые, результат пишется в витрины PostgreSQL для BI, о сбоях приходят алерты в Telegram.</p></div>
+          <div class="cb"><span class="cl">Результат</span><p>Точно распознано <span class="hl">~90%</span> точек программы мотивации и <span class="hl">~85%</span> точек отгрузок, найдено <span class="hl">722 тыс.</span> связок. Разобрала, почему покрытие не 100%: у большинства несовпавших точек просто нет участников программы, а не ошибка сопоставления. На этих данных аналитики защитили оценку программы перед топ-менеджментом, по итогам решили запускать индивидуальные планы продаж и тесты новых механик. Пайплайн работает ежедневно.</p></div>
+        </div>
+        <ul class="stack"><li>Python</li><li>PostgreSQL</li><li>DuckDB</li><li>ГАР / ФИАС</li><li>Telegram-алерты</li><li>Claude</li></ul>
+      </article>
+
+      <article class="case featured">
+        <div class="case-head">
+          <span class="tag">Генеративный AI · Event · интеграции</span>
+          <h3>ИИ-фотозона QWERTY: фото посетителя в стиле персонажей бренда</h3>
+        </div>
+        <div class="case-body quad">
+          <div class="cb"><span class="cl">Задача</span><p>Для стенда нового бренда QWERTY на выставке VCS 2026 нужна была механика, которая привлечёт посетителей и оставит у них что-то на память о бренде, — и при этом выдержит поток людей на стенде.</p></div>
+          <div class="cb"><span class="cl">Как устроено</span><p>Посетитель сканирует QR-код и попадает в Telegram-бота. Загружает своё фото, бот передаёт его в сервис генерации на собственном бэкенде через защищённый API-запрос, а в ответ получает готовое изображение — человека в стилистике персонажей бренда. Бот отправляет картинку, отмечает участие и пишет событие в таблицу и CRM.</p></div>
+          <div class="cb"><span class="cl">Чтобы ничего не ломалось</span><p>Запросы на генерацию идут через очередь, поэтому пиковый поток на стенде не роняет сервис. Если генерация не удалась, бот не теряет пользователя, а предлагает попробовать ещё раз. На выставке генерация была доступна один раз на человека, а все обращения логировались, чтобы видеть нагрузку и ошибки в реальном времени.</p></div>
+          <div class="cb"><span class="cl">Стилистика</span><p>Генерация настроена так, чтобы результат совпадал с визуальным стилем персонажей QWERTY, а не выглядел как случайный AI-фильтр. Каждая картинка — это узнаваемый контент бренда, которым посетители делятся сами.</p></div>
+        </div>
+        <div class="case-result">
+          <div><span class="cl">Результат</span><p>За два дня выставки — <span class="hl">более 2 000 генераций</span>. Фотозона была частью стенда вместе с играми, опросами по продуктам и ботом-помощником для промоутеров. После выставки генерацию оставили как постоянную функцию: она доступна в боте QWERTY без ограничения попыток и на сайте бренда.</p></div>
+        </div>
+        <ul class="stack"><li>Генерация изображений</li><li>Собственный бэкенд / REST API</li><li>Очередь задач</li><li>Botmother</li><li>Mindbox</li><li>Google Sheets</li></ul>
+      </article>
+
+
+
+
+      <article class="case featured">
+        <div class="case-head">
+          <span class="tag">Лидогенерация · интеграции</span>
+          <h3>Plonq Link: продавцы приводят покупателей в Telegram-бот бренда</h3>
+        </div>
+        <div class="case-body quad">
+          <div class="cb"><span class="cl">Задача</span><p>Наращивать базу покупателей в Telegram-боте бренда, через который работают поддержка, рассылки и повторные продажи, — дешевле, чем через рекламу. Самая короткая дорога к покупателю — продавец в точке, который и так общается с ним каждый день.</p></div>
+          <div class="cb"><span class="cl">Механика</span><p>Запустила программу внутри программы мотивации продавцов. Продавец показывает покупателю QR-код, тот переходит в бот и вводит ID продавца. За каждые 30 приглашённых продавец автоматически получает 1000 баллов. Засчитывается только первый переход, а подозрительные регистрации и искусственные переходы отсекаются.</p></div>
+          <div class="cb"><span class="cl">Как связано</span><p>Лендинг и личный кабинет продавца с прогресс-баром — в промо-системе, раздел с QR-кодом и ID — в боте программы мотивации. B2C-бот проверяет введённый ID через CRM и засчитывает приглашение продавцу, а промо-система начисляет баллы без ручной работы.</p></div>
+          <div class="cb"><span class="cl">Результат</span><p>Стоимость лида — <span class="hl">33 ₽</span> при средней рыночной цене от 50 до 300+ ₽. Больше половины пришедших покупателей остались в боте и получают поддержку и рассылки бренда.</p></div>
+        </div>
+        <ul class="stack"><li>Robobill</li><li>Botmother</li><li>Mindbox</li><li>QR / диплинки</li></ul>
+      </article>
+
+      <article class="case featured">
+        <div class="case-head">
+          <span class="tag">Аналитика · дашборды · мониторинг</span>
+          <h3>Система метрик отдела: дашборд для каждого направления и общий</h3>
+        </div>
+        <div class="case-body quad">
+          <div class="cb"><span class="cl">Было</span><p>Показатели поддержки, SMM, CRM, сайтов и работы с блогерами собирались вручную из разных источников и в разном виде. Увидеть, как идёт работа отдела в целом, было невозможно без долгой ручной сводки.</p></div>
+          <div class="cb"><span class="cl">Дашборды по направлениям</span><ul class="dir">
+<li><b>Поддержка</b> — SLA, CSI по B2C и программе мотивации, нагрузка и результаты по каждому сотруднику: неделя, месяц, полугодие.</li>
+<li><b>Инфлюенс-маркетинг</b> — работа с блогерами и результаты интеграций.</li>
+<li><b>CRM</b> — массовые и триггерные рассылки по всем брендам и каналам (email, Telegram, push, SMS), активная база, предотток и отток.</li>
+<li><b>Веб</b> — автовыгрузка Яндекс.Метрики по API: посещаемость, цели и UTM-метки по сайтам брендов и программы мотивации.</li>
+<li><b>SMM</b> — показатели соцсетей и Telegram-каналов брендов.</li>
+<li><b>Аналитика Telegram-чатов брендов</b> — ежедневные и недельные отчёты по обсуждениям.</li>
+<li><b>Антифрод программы мотивации</b> — проверка действий участников и алерты о подозрительной активности.</li>
+</ul></div>
+          <div class="cb"><span class="cl">Общий дашборд отдела</span><p>Ключевые метрики всех направлений собраны в одном месте, чтобы руководитель и команда видели, как идёт работа отдела в целом: где рост, где просадка и куда смотреть в первую очередь. Детали при этом остаются в дашбордах направлений.</p></div>
+          <div class="cb"><span class="cl">Связанные проекты</span><p>Аналитика Telegram-чатов брендов и антифрод-система программы мотивации выросли из системы метрик в отдельные автоматизированные проекты — подробнее в карточках ниже.</p></div>
+        </div>
+        <div class="case-result">
+          <div><span class="cl">Результат</span><p>Метрики собираются автоматически или полуавтоматически, у каждого направления свой дашборд, а общий показывает картину отдела целиком. Просадки и аномалии видно сразу, а подозрительная активность в программе мотивации без задержки попадает к поддержке.</p></div>
+        </div>
+        <ul class="stack"><li>Google Sheets / Apps Script</li><li>Looker Studio</li><li>Power BI</li><li>Яндекс.Метрика API</li><li>n8n</li><li>SQL / PostgreSQL</li></ul>
+      </article>
+
+    
+      <article class="case">
+        <div class="case-head">
+          <span class="tag">Аналитика · n8n</span>
+          <h3>Аналитика Telegram-чатов брендов</h3>
+        </div>
+        <div class="case-body">
+          <div class="cb"><span class="cl">Было</span><p>В чатах обсуждений Plonq, программы мотивации, QWERTY, ROQY и STELS каждый день идут сотни сообщений: вопросы, жалобы, отзывы о продуктах. Читать всё вручную невозможно, и важные сигналы терялись.</p></div>
+          <div class="cb"><span class="cl">Решение</span><p>Бот собирает сообщения из чатов, а workflow на n8n — отдельный для каждого бренда — каждый день в 18:00 готовит отчёт по обсуждениям. По понедельникам выходит недельный отчёт, который строится из дневных, а не пересчитывает все сообщения заново. Сырые сообщения хранятся три месяца, отчёты — бессрочно, из медиа сохраняются только метаданные.</p></div>
+          <div class="cb"><span class="cl">Эффект</span><p>Команда каждый день видит, что обсуждает аудитория каждого бренда, без ручного чтения чатов, а недельная динамика доступна в одном отчёте.</p></div>
+        </div>
+        <ul class="stack"><li>n8n</li><li>Telegram Bot API</li><li>Google Sheets</li></ul>
+      </article>
+
+      <article class="case">
+        <div class="case-head">
+          <span class="tag">Данные · мониторинг</span>
+          <h3>Антифрод-система программы мотивации</h3>
+        </div>
+        <div class="case-body">
+          <div class="cb"><span class="cl">Было</span><p>В программе мотивации продавцов встречаются схемы накрутки баллов. Поддержка находила их вручную и с опозданием, когда выплаты уже могли уйти.</p></div>
+          <div class="cb"><span class="cl">Решение</span><p>Выгрузки действий участников лежат в PostgreSQL, а правила антифрода анализируют их три раза в день. При подозрении на фрод в Telegram приходит алерт, а поддержка проверяет случай и при необходимости блокирует участника. Правила пополняются по известным схемам, которые собираем вместе с поддержкой.</p></div>
+          <div class="cb"><span class="cl">Эффект</span><p>Схемы фрода выявляются оперативно, поэтому подозрительные аккаунты вовремя блокируются или замораживаются, и компания не платит за накрутки. С запуском системы сумма потерь от фрода сократилась <span class="hl">в разы</span>.</p></div>
+        </div>
+        <ul class="stack"><li>SQL / PostgreSQL</li><li>Python</li><li>Telegram-алерты</li></ul>
+      </article>
+
+      <article class="case">
+        <div class="case-head">
+          <span class="tag">Процессы · Jira</span>
+          <h3>Рабочие процессы отдела в Jira</h3>
+        </div>
+        <div class="case-body">
+          <div class="cb"><p>Перевела отдел и смежные команды из Asana в Jira и настроила всё под нашу работу: автоматизации, workflow, формы, доски и календарь коммуникаций по брендам. Задачи раскладываются сами и больше не теряются, время на постановку и контроль сократилось в разы, а каждой команде — SMM, CRM, поддержке — удобно вести кросс-функциональные задачи и проекты в одном пространстве.</p></div>
+        </div>
+        <ul class="stack"><li>Jira Automation</li><li>Workflow</li><li>Формы</li><li>Plans</li></ul>
+      </article>
+
+    </div>
+    <p class="cases-note">Это далеко не все мои проекты — здесь собраны основные, о которых хочется рассказать подробнее. Об остальных с удовольствием расскажу на встрече.</p>
+  </div>
+</section>
+
+<section id="approach">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Как я работаю</h2>
+      <p class="sec-note">От разговора с командой до инструмента, которым пользуются каждый день.</p>
+    </div>
+    <ol class="steps">
+      <li><b>Разбираюсь в процессе</b><span>Говорю с людьми, которые делают работу руками, фиксирую шаги и боли в протоколах.</span></li>
+      <li><b>Нахожу рутину</b><span>Выбираю то, где автоматизация даст заметную экономию времени и меньше ошибок.</span></li>
+      <li><b>Собираю MVP скрыто</b><span>Тестирую на реальных данных так, чтобы не задеть живой процесс, и только потом подключаю пользователей.</span></li>
+      <li><b>Оставляю контроль человеку</b><span>Черновики вместо автоответов, очередь ручного разбора, алерты о сбоях, работа с данными только на чтение.</span></li>
+      <li><b>Документирую и обучаю</b><span>Схемы, инструкции и база знаний в Confluence, объясняю коллегам без технического шума.</span></li>
+      <li><b>Регулярно пересматриваю</b><span>Ежемесячное ревью: ошибки — в задачи, документация — в актуальное состояние.</span></li>
+    </ol>
+  </div>
+</section>
+
 
 <section id="experience">
   <div class="wrap">
     <div class="sec-head"><h2>Опыт работы</h2></div>
     <div class="timeline">
       <article class="job">
-        <div><div class="co">Plonq</div><div class="role">Проектный менеджер</div></div>
-        <p>Работаю проектным менеджером в отделе активаций, который входит в структуру маркетинга Plonq — международной быстрорастущей мультибрендовой FMCG-компании. Управляю проектами, собираю аналитические дашборды и помогаю улучшать внутренние бизнес-процессы.</p>
+        <div><div class="co">Plonq</div><div class="role">Проектный менеджер, отдел активаций</div><div class="period">июль 2025 — настоящее время</div></div>
+        <p>Отдел активаций в маркетинге международной мультибрендовой FMCG-компании. Веду маркетинговые проекты и запуски, автоматизирую процессы команды: боты, AI-ассистенты, дашборды и пайплайны данных.</p>
       </article>
       <article class="job">
-        <div><div class="co">Blue Swan PC</div><div class="role">Проектный менеджер</div></div>
-        <p>Работала в молодой динамичной компании на этапе активного роста. За 10 месяцев внедрила ключевые процессы с нуля. Мои решения помогли масштабировать сервис, повысить эффективность отделов и укрепить клиентскую лояльность.</p>
+        <div><div class="co">Blue Swan PC</div><div class="role">Проектный менеджер</div><div class="period">сентябрь 2024 — июнь 2025 · 10 месяцев</div></div>
+        <p>За 10 месяцев выстроила ключевые процессы с нуля: отдел постпродажного сервиса, программа лояльности, оптимизация CRM для отдела продаж, система обучения сотрудников — <span class="hl">время адаптации сократилось на 40%</span>.</p>
       </article>
       <article class="job">
         <div><div class="co">Paper Planes</div><div class="role">Стажёр бизнес-аналитик</div></div>
-        <p>Проходила стажировку в консалтинговой компании. Научилась проводить комплексный анализ рынков и компаний. Результаты моих исследований использовались в проектах по оптимизации бизнес-процессов заказчиков.</p>
+        <p>Комплексный анализ рынков и компаний для проектов по оптимизации бизнес-процессов заказчиков.</p>
       </article>
     </div>
-  </div>
-</section>
-
-<section id="projects">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>Ключевые проекты Plonq</h2>
-      <p class="sec-note">Это далеко не полный список, а проекты, в которых мой вклад как PM был наиболее значимым для бизнес-результатов.</p>
-    </div>
-    <div class="cards">
-      <article class="card"><span class="num">01</span><h3>Экопроект на День Земли</h3><p>Совместно с Trade Marketing участвовала в запуске экопроекта ко Дню Земли, направленного на повышение знания об экологической инициативе Plonq и вовлечение пользователей в сдачу устройств на переработку. Проект объединил офлайн-механику в партнёрских точках, digital-поддержку, рассылки, посевы, работу с блогерами и геймификацию в B2C-боте. В результате была запущена единая коммуникационная механика, которая связала digital-каналы и офлайн-активацию в рамках одного проекта.</p></article>
-      <article class="card"><span class="num">02</span><h3>Insight Community</h3><p>Совместно с отделом инсайтов запустили закрытое комьюнити для аудитории из сферы, в которое пользователи попадали через анкету в боте. Проект позволил сформировать базу респондентов для исследований, снизить стоимость исследований и увеличить количество собираемых инсайтов с рынка.</p></article>
-      <article class="card"><span class="num">03</span><h3>Запуск программы лидогенерации Plonq Link</h3><p>Реализовали программу лидогенерации Plonq Link в рамках программы мотивации с привлечением пользователей в Telegram-бот. Проект показал высокую эффективность: <span class="hl">стоимость лида составила 33 рубля</span> при средней рыночной цене от 50 до 300+ рублей, а более половины аудитории оставались в боте.</p></article>
-      <article class="card"><span class="num">04</span><h3>Pre-launch кампания бренда</h3><p>Участвовала в запуске большой pre-launch кампании перед выпуском нового бренда, нацеленной на рост узнаваемости с нуля. В рамках проекта были реализованы геймификации на сайте, баннерное и digital-продвижение, таргетированная реклама, посевы и другие инструменты охватной кампании.</p></article>
-      <article class="card"><span class="num">05</span><h3>Автоматизация сбора метрик</h3><p>Разработала систему дашбордов для автоматизированного и полуавтоматизированного сбора метрик по направлениям customer service, SMM, CRM marketing, web development и influence marketing. Также создала общий дашборд отдела с ключевыми метриками для анализа результатов команды в целом. Проект позволил повысить прозрачность аналитики, улучшить контроль показателей и сделать работу с данными более системной.</p></article>
-      <article class="card"><span class="num">06</span><h3>Новогодняя кампания</h3><p>Реализовали комплексную новогоднюю кампанию Plonq, объединив digital-активации и партнёрские коллаборации. В рамках проекта запустили адвент-календарь на сайте, крупные розыгрыши, продвижение в онлайн-каналах, посевы, статьи и механику со скретч-картой в программе мотивации.</p></article>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>Основные проекты Blue Swan PC</h2>
-      <p class="sec-note">Кейсы, которые лучше всего отражают мой подход к управлению и достижению результата.</p>
-    </div>
-    <div class="cards">
-      <article class="card"><span class="num">01</span><h3>Внедрение отдела клиентского сервиса (Post-Sales)</h3><p>Организовала отдел постпродажной поддержки для повышения лояльности клиентов и снижения нагрузки на отдел продаж. В результате был повышен уровень сервиса и показатель NPS.</p></article>
-      <article class="card"><span class="num">02</span><h3>Запуск программы лояльности</h3><p>Организовала end-to-end процесс запуска: подбор подрядчиков, согласование макетов, внедрение механик, интеграция с системой учёта. В результате выявлен рост повторных продаж, среднего чека и повышение retention.</p></article>
-      <article class="card"><span class="num">03</span><h3>Оптимизация CRM для отдела продаж</h3><p>Выявила узкие места, привлекла интеграторов для разработки, внедрила систему контроля и удобную отчётность, внедрила обучение для менеджеров. В результате было сокращено время заполнения карточек, ускорено время ответа клиентам, устранена проблема с потерей клиентов.</p></article>
-      <article class="card"><span class="num">04</span><h3>Оптимизация адаптации и обучения сотрудников</h3><p>Разработала структурированную программу обучения, внедрила систему тестирования, создала регламенты и чек-листы для новых сотрудников. В результате <span class="hl">время на обучение и адаптацию снизилось на 40%</span>.</p></article>
-    </div>
-  </div>
-</section>
-
-<section id="skills">
-  <div class="wrap">
-    <div class="sec-head"><h2>Профессиональные навыки</h2></div>
-    <div class="skills">
-      <div class="card">
-        <span class="num">HARD SKILLS</span>
-        <ul>
-          <li><b>Планирование и ведение проектов end-to-end</b>формирование roadmap, milestone plan и critical path, контроль сроков, статусов и исполнения задач</li>
-          <li><b>Постановка и декомпозиция задач</b>ведение backlog и action log, координация задач в Jira и Asana, контроль исполнения</li>
-          <li><b>Проектная коммуникация и отчётность</b>подготовка статус-репортов, протоколов встреч, follow-up, проведение project и steering meetings с фиксацией решений</li>
-          <li><b>Аналитика и визуализация данных</b>продвинутая работа в Google Sheets, включая Apps Script, подготовка KPI-дашбордов и отчётности в Looker Studio</li>
-          <li><b>Ведение проектной документации и базы знаний</b>подготовка и актуализация проектной документации, структурирование материалов в Confluence, создание чек-листов запуска</li>
-          <li><b>Координация кросс-функционального взаимодействия</b>работа с командами marketing, R&amp;D, supply chain, procurement и finance в рамках проектных инициатив</li>
-          <li><b>Взаимодействие с подрядчиками и внешними партнёрами</b>координация задач, сопровождение проектной реализации и контроль статусов</li>
-          <li><b>Понимание процессов маркетингового отдела в FMCG</b>планирование и сопровождение запусков, координация упаковочных изменений, промо-инициатив и взаимодействие со смежными функциями для своевременного вывода продукта на рынок</li>
-        </ul>
       </div>
-      <div class="card">
-        <span class="num">SOFT SKILLS</span>
-        <ul>
-          <li><b>Стратегическое и системное мышление</b>умение видеть взаимосвязи между задачами, процессами и бизнес-целями, определять приоритеты и принимать решения с учётом общего контекста</li>
-          <li><b>Коммуникация и управление стейкхолдерами</b>выстраивание эффективного взаимодействия со смежными командами и заинтересованными сторонами, чёткая письменная и устная коммуникация, своевременная эскалация вопросов и рисков</li>
-          <li><b>Лидерство и командное взаимодействие</b>организация совместной работы, выравнивание команд по целям и задачам, поддержание продуктивного взаимодействия и фокуса на результате</li>
-          <li><b>Фасилитация встреч и координация обсуждений</b>проведение рабочих встреч, структурирование диалога, фиксация договорённостей и сопровождение команд к принятию решений</li>
-          <li><b>Навыки переговоров и разрешения конфликтов</b>поиск сбалансированных решений, аргументированное отстаивание позиции, снижение напряжения и выстраивание конструктивного взаимодействия</li>
-          <li><b>Самостоятельность и проактивность</b>инициативный подход к задачам, готовность брать ответственность, предлагать решения и двигать процессы вперёд</li>
-          <li><b>Организованность и исполнительская дисциплина</b>системный подход к работе, соблюдение договорённостей, контроль задач и внимание к деталям</li>
-          <li><b>Гибкость в работе с приоритетами</b>способность быстро адаптироваться к изменениям, перестраивать фокус и сохранять эффективность в динамичной среде</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="tools">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>Стек инструментов</h2>
-      <p class="sec-note">Не полный перечень, а часть стека, который я регулярно использую в проектной работе.</p>
-    </div>
-    <div class="tools">
-      <div class="tool"><h3>Jira / Asana</h3><p>Ведение и контроль проектов, постановка и трекинг задач, координация командной работы. Сначала работа велась в Asana, затем процессы были перенесены в Jira.</p></div>
-      <div class="tool"><h3>Confluence</h3><p>Ведение и актуализация проектной документации, чек-листы запусков, описание рабочих процессов и структурирование информации, которой команда отдела пользовалась в ежедневной работе.</p></div>
-      <div class="tool"><h3>Robobill</h3><p>Настройка и ведение программы мотивации: новые механики, изменение блоков на сайте через конструктор, актуальность конфигурации и выгрузки для анализа результатов.</p></div>
-      <div class="tool"><h3>Usedesk</h3><p>Настройка и развитие сервисных процессов customer service: новые каналы коммуникации, автоматизации, сбор CSI, система тегов и необходимые интеграции.</p></div>
-      <div class="tool"><h3>Botmother</h3><p>Настройка и сопровождение чат-ботов компании: сценарии под разные задачи, пользовательские логики, опросы и анализ статистики по экранам и прохождению сценариев.</p></div>
-      <div class="tool"><h3>Miro</h3><p>Совместная проработка проектных задач: CJM, визуализация roadmap и синхронизация команд в понимании процессов, этапов и зон ответственности.</p></div>
-      <div class="tool"><h3>Google Sheets / Apps Script / Looker Studio</h3><p>Работа с данными и автоматизация процессов: логика таблиц, сложные формулы и скрипты, визуализации и дашборды для мониторинга ключевых показателей.</p></div>
-      <div class="tool"><h3>Figma</h3><p>Базовый уровень: работа с макетами и материалами команды дизайна, ориентация в структуре экранов и использование макетов в проектной работе.</p></div>
-      <div class="tool"><h3>AI tools</h3><p>Обработка информации, подготовка материалов и оптимизация рутинных процессов с соблюдением внутренних требований к данным и безопасности.</p></div>
-    </div>
-  </div>
 </section>
 
 <section>
@@ -289,6 +454,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
         <span class="num">ОБРАЗОВАНИЕ</span>
         <ul class="chips">
           <li class="main">Финансы и кредит — Университет «Синергия»</li>
+          <li>Курсы по работе с Claude — Anthropic Academy</li>
           <li>Проектное управление — Plonq</li>
           <li>Digital and Performance Marketing — CXL</li>
           <li>Английский — Skyeng</li>
@@ -301,6 +467,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
         <ul class="langs">
           <li>Английский <span>Upper-Intermediate (B2)</span></li>
           <li>Русский <span>Родной</span></li>
+          <li>Украинский <span>Родной</span></li>
         </ul>
       </div>
     </div>
@@ -312,12 +479,12 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
     <div class="bio">
       <div>
         <div class="sec-head"><h2>Биография</h2></div>
-        <blockquote>Моя цель — расти как project manager и участвовать в масштабных маркетинговых запусках.</blockquote>
+        <blockquote>Моя сильная сторона — оптимизация и автоматизация процессов: превращаю рутину в работающие AI-инструменты.</blockquote>
       </div>
       <div>
-        <p>Я родилась и выросла в Донецке. Со школы проявляла технический склад ума, что помогло мне с отличием окончить лицей в группе с информационно-математическим уклоном. Глубокое погружение в программирование в те годы научило меня структурному мышлению, логике решения задач и вниманию к деталям — качествам, которые сегодня я успешно применяю в проектном менеджменте.</p>
-        <p>После лицея я переехала в Москву для получения высшего образования. Именно в университете я открыла для себя сферу управления проектами. Меня привлекла возможность организовывать процессы, работать с командами и видеть результат совместных усилий. Уже на этом этапе я начала применять свои аналитические способности на практике, получив первый опыт работы в роли PM.</p>
-        <p>Сегодня я вижу своё дальнейшее развитие в проектном менеджменте в сфере маркетинга. Мне интересно работать с комплексными проектами, которые требуют координации разных команд, внимательного планирования и ориентации на результат. Моя цель — расти как project manager, участвовать в масштабных маркетинговых запусках и развивать экспертизу в управлении проектами внутри сильной, динамичной команды.</p>
+        <p>Я родилась и выросла в Донецке. Со школы проявляла технический склад ума и с отличием окончила лицей в группе с информационно-математическим уклоном. Программирование в те годы научило меня структурному мышлению, логике решения задач и вниманию к деталям — сегодня это основа моей работы с AI и автоматизацией.</p>
+        <p>После лицея я переехала в Москву учиться и в университете открыла для себя управление проектами: мне нравилось разбираться, как устроены процессы, и делать так, чтобы команды работали слаженнее. Уже тогда я начала совмещать аналитику и практику, получив первый опыт в роли PM.</p>
+        <p>Сегодня свою сильную сторону я вижу в оптимизации и автоматизации процессов. Опыт проектного менеджмента помогает быстро понять, как устроена работа команды и где теряется время, а технический бэкграунд — самой собрать решение: AI-агента, интеграцию, пайплайн данных или бота — и довести его до ежедневного использования. Хочу развиваться в создании AI-агентов и LLM-инструментов для бизнеса, работая в команде, где ценят измеримый результат.</p>
       </div>
     </div>
   </div>
