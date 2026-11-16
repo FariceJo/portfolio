@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Фестиваль «Зерно и Точка» — 14 декабря</title>
+<meta name="description" content="Демо-проект: лендинг фестиваля кофейни с регистрацией, электронным билетом и выбором мастер-классов.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --roast:#241812;
+  --bean:#3B2A20;
+  --milk:#F3ECE3;
+  --foam:#FFFFFF;
+  --cup:#2F4BFF;
+  --muted:#7A685C;
+  --line:#DDD1C3;
+  --display:"Unbounded", "Arial Black", sans-serif;
+  --body:"Golos Text", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, monospace;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--milk);color:var(--roast);font:400 17px/1.55 var(--body)}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.02;margin:0;letter-spacing:-.02em;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.demo{background:var(--cup);color:#fff;text-align:center;font-size:13px;padding:7px 16px}
+.demo a{color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:14px;padding:17px 26px;font:600 16px/1 var(--body);cursor:pointer;text-decoration:none;transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn:focus-visible,input:focus-visible,label.slot:focus-within{outline:3px solid var(--cup);outline-offset:3px}
+.btn-cup{background:var(--cup);color:#fff}
+.btn-dark{background:var(--roast);color:var(--milk)}
+.btn-line{background:transparent;box-shadow:inset 0 0 0 2px currentColor}
+nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;gap:16px}
+.logo{font-family:var(--display);font-size:20px;text-decoration:none}
+.logo b{color:var(--cup)}
+nav .links{display:flex;gap:26px;font-size:15px}
+nav .links a{text-decoration:none;color:var(--muted)}
+.hero{background:var(--roast);color:var(--milk);border-radius:32px;padding:56px;position:relative;overflow:hidden;display:grid;grid-template-columns:1.25fr .75fr;gap:40px}
+.hero h1{font-size:clamp(46px,7.4vw,104px)}
+.hero h1 span{color:var(--cup)}
+.hero .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.chip{border:1.5px solid rgba(243,236,227,.35);border-radius:999px;padding:8px 14px;font-size:14px}
+.hero .lead{max-width:30em;margin-top:24px;color:rgba(243,236,227,.8);font-size:18px}
+.hero .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.countdown{align-self:end;background:var(--bean);border-radius:22px;padding:24px}
+.countdown .row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.countdown b{display:block;font-family:var(--display);font-size:40px;font-variant-numeric:tabular-nums}
+.countdown span{font-size:12px;color:rgba(243,236,227,.6)}
+.cup{position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle at 50% 50%,#C79A6B 0 32%,#8A5A35 33% 46%,var(--bean) 47% 60%,transparent 61%);opacity:.55}
+section{padding:96px 0}
+.head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
+.head h2{font-size:clamp(34px,4.6vw,60px)}
+.head p{max-width:26em;color:var(--muted)}
+.menu{display:grid;gap:0;border-top:2px solid var(--roast)}
+.item{display:grid;grid-template-columns:110px 1fr auto;gap:24px;align-items:baseline;padding:22px 0;border-bottom:1px dashed var(--line)}
+.item time{font-family:var(--mono);font-size:15px;color:var(--cup);font-weight:500}
+.item h3{font-size:22px;font-family:var(--body);font-weight:600;letter-spacing:0}
+.item p{color:var(--muted);font-size:15px;margin-top:4px}
+.item .tag{font-family:var(--mono);font-size:12px;background:var(--foam);border:1px solid var(--line);border-radius:999px;padding:6px 10px;white-space:nowrap}
+.reg{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.card{background:var(--foam);border-radius:24px;padding:32px;border:1px solid var(--line)}
+form{display:grid;gap:14px}
+label{font-size:13px;font-weight:600}
+input[type=text],input[type=tel]{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:15px 16px;font:400 17px var(--body);background:var(--milk)}
+.slots{display:grid;gap:10px}
+.slot{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;cursor:pointer;background:var(--milk)}
+.slot:has(input:checked){border-color:var(--cup);background:#EEF1FF}
+.slot input{accent-color:var(--cup);width:18px;height:18px}
+.slot .left{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.slot.full{opacity:.45;cursor:not-allowed}
+.consent{display:flex;gap:10px;font-size:13px;color:var(--muted);font-weight:400}
+.consent input{accent-color:var(--cup)}
+.err{color:#C0362C;font-size:14px;min-height:20px}
+.ticket{background:var(--roast);color:var(--milk);border-radius:24px;overflow:hidden;display:none}
+.ticket.show{display:block}
+.ticket .top{padding:28px;display:flex;justify-content:space-between;gap:16px}
+.ticket h3{font-size:30px}
+.ticket .tear{border-top:2px dashed rgba(243,236,227,.3);margin:0 20px;position:relative}
+.ticket .bottom{padding:24px 28px 28px;display:grid;grid-template-columns:1fr 132px;gap:20px;align-items:center}
+.ticket dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0;font-size:15px}
+.ticket dt{color:rgba(243,236,227,.55);font-family:var(--mono);font-size:12px;text-transform:uppercase;padding-top:2px}
+.ticket dd{margin:0}
+canvas{background:#fff;border-radius:10px;width:132px;height:132px}
+.placeholder{border:2px dashed var(--line);border-radius:24px;padding:40px;color:var(--muted);text-align:center}
+.placeholder b{display:block;font-family:var(--display);font-size:24px;color:var(--roast);margin-bottom:8px}
+.perks{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.perk{background:var(--foam);border-radius:22px;padding:28px;border:1px solid var(--line)}
+.perk .n{font-family:var(--display);font-size:54px;color:var(--cup)}
+.perk h3{font-family:var(--body);font-size:20px;letter-spacing:0;margin:8px 0}
+.perk p{color:var(--muted);font-size:15px}
+.where{background:var(--cup);color:#fff;border-radius:32px;padding:56px;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
+.where h2{font-size:clamp(34px,4.6vw,56px)}
+.map{aspect-ratio:4/3;border-radius:20px;background:linear-gradient(90deg,rgba(255,255,255,.18) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(rgba(255,255,255,.18) 1px,transparent 1px) 0 0/40px 40px,#2539D6;position:relative}
+.map::before{content:"";position:absolute;left:30%;top:0;bottom:0;width:26px;background:rgba(255,255,255,.3)}
+.map::after{content:"";position:absolute;top:58%;left:0;right:0;height:22px;background:rgba(255,255,255,.3)}
+.pin{position:absolute;left:calc(30% - 14px);top:calc(58% - 46px);width:54px;height:54px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--milk);z-index:2}
+.pin::after{content:"";position:absolute;inset:16px;border-radius:50%;background:var(--roast)}
+footer{padding:40px 0 60px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:14px}
+@media (max-width:900px){
+  .hero,.reg,.where{grid-template-columns:1fr}
+  .hero,.where{padding:32px 22px;border-radius:24px}
+  .perks{grid-template-columns:1fr}
+  nav .links{display:none}
+  .item{grid-template-columns:80px 1fr}
+  .item .tag{grid-column:2;justify-self:start}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+</style>
+</head>
+<body>
+<div class="demo">Демо-проект для портфолио · кофейня и событие вымышленные · сайт — <a href="https://yarosh-anastasia.ru/">Анастасия Ярош</a></div>
+<div class="wrap">
+  <nav>
+    <a class="logo" href="#top">Зерно<b>·</b>Точка</a>
+    <div class="links"><a href="#program">Программа</a><a href="#reg">Регистрация</a><a href="#where">Как добраться</a></div>
+    <a class="btn btn-dark" href="#reg">Получить билет</a>
+  </nav>
+  <header class="hero" id="top">
+    <div class="cup" aria-hidden="true"></div>
+    <div>
+      <span class="mono" style="color:rgba(243,236,227,.6)">Фестиваль кофейни · вход свободный по регистрации</span>
+      <h1 style="margin-top:18px">Один день<br>из <span>9 чашек</span></h1>
+      <p class="lead">Каппинг с обжарщиком, латте-арт баттл и лекция о том, почему ваш кофе дома горчит. Места на мастер-классы ограничены — бронируйте заранее.</p>
+      <div class="meta"><span class="chip">14 декабря, сб</span><span class="chip">12:00–20:00</span><span class="chip">3 кофейни сети</span><span class="chip">Розыгрыш кофемолки</span></div>
+      <div class="actions"><a class="btn btn-cup" href="#reg">Зарегистрироваться бесплатно</a><a class="btn btn-line" href="#program" style="color:var(--milk)">Смотреть программу</a></div>
+    </div>
+    <div class="countdown" aria-live="polite">
+      <span class="mono" style="color:rgba(243,236,227,.6)">До открытия</span>
+      <div class="row" id="cd"><div><b id="cd-d">—</b><span>дней</span></div><div><b id="cd-h">—</b><span>часов</span></div><div><b id="cd-m">—</b><span>минут</span></div><div><b id="cd-s">—</b><span>секунд</span></div></div>
+    </div>
+  </header>
+</div>
+<section id="program">
+  <div class="wrap">
+    <div class="head"><h2>Программа</h2><p>Свободно гуляйте между точками или займите место на мастер-классе — это делается при регистрации.</p></div>
+    <div class="menu">
+      <div class="item"><time>12:00</time><div><h3>Открытие и бесплатный фильтр-кофе</h3><p>Три сорта дня: Эфиопия, Колумбия, Бразилия.</p></div><span class="tag">для всех</span></div>
+      <div class="item"><time>13:00</time><div><h3>Каппинг с обжарщиком</h3><p>Учимся различать кислотность, тело и послевкусие на 6 образцах.</p></div><span class="tag">20 мест</span></div>
+      <div class="item"><time>15:00</time><div><h3>Лекция «Почему дома горчит»</h3><p>Помол, вода, температура — разбираем ошибки домашнего бариста.</p></div><span class="tag">для всех</span></div>
+      <div class="item"><time>16:30</time><div><h3>Мастер-класс по латте-арту</h3><p>Сердце и тюльпан с первой попытки. Молоко и питчеры дадим.</p></div><span class="tag">12 мест</span></div>
+      <div class="item"><time>18:00</time><div><h3>Латте-арт баттл бариста</h3><p>Голосуют гости, у победителя — годовой запас зерна.</p></div><span class="tag">для всех</span></div>
+      <div class="item"><time>19:30</time><div><h3>Розыгрыш кофемолки</h3><p>Участвуют все, кто отметился на фестивале по билету.</p></div><span class="tag">по билету</span></div>
+    </div>
+  </div>
+</section>
+<section id="reg" style="padding-top:0">
+  <div class="wrap">
+    <div class="head"><h2>Регистрация</h2><p>Билет придёт сразу на этой странице и в Telegram-бот. Покажите QR-код на входе — так вы попадёте в розыгрыш.</p></div>
+    <div class="reg">
+      <div class="card">
+        <form id="f" novalidate>
+          <div><label for="name">Имя</label><input id="name" type="text" autocomplete="given-name" placeholder="Как к вам обращаться"></div>
+          <div><label for="phone">Телефон</label><input id="phone" type="tel" autocomplete="tel" placeholder="+7 900 000-00-00"></div>
+          <div><label>Мастер-класс (необязательно)</label>
+            <div class="slots" id="slots">
+              <label class="slot"><input type="radio" name="slot" value="none" checked><span>Только свободное посещение</span><span class="left">∞</span></label>
+              <label class="slot"><input type="radio" name="slot" value="cupping" data-left="4"><span>13:00 · Каппинг с обжарщиком</span><span class="left" data-for="cupping">осталось 4</span></label>
+              <label class="slot"><input type="radio" name="slot" value="latte" data-left="2"><span>16:30 · Латте-арт</span><span class="left" data-for="latte">осталось 2</span></label>
+            </div>
+          </div>
+          <label class="consent"><input type="checkbox" id="ok"> Согласна(ен) с правилами акции и обработкой персональных данных</label>
+          <p class="err" id="err" role="alert"></p>
+          <button class="btn btn-cup" type="submit">Получить билет</button>
+        </form>
+      </div>
+      <div>
+        <div class="placeholder" id="ph"><b>Здесь появится билет</b>Заполните форму слева — покажем электронный билет с QR-кодом.</div>
+        <div class="ticket" id="ticket" aria-live="polite">
+          <div class="top"><div><span class="mono" style="color:rgba(243,236,227,.55)">Электронный билет</span><h3 style="margin-top:8px">Зерно·Точка</h3></div><span class="mono" id="t-no" style="color:var(--cup);font-size:14px"></span></div>
+          <div class="tear"></div>
+          <div class="bottom">
+            <dl><dt>Гость</dt><dd id="t-name"></dd><dt>Дата</dt><dd>14 декабря, 12:00–20:00</dd><dt>Мастер-класс</dt><dd id="t-slot"></dd><dt>Розыгрыш</dt><dd>участвует</dd></dl>
+            <canvas id="qr" width="132" height="132" aria-label="QR-код билета"></canvas>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-top:12px">Демо: данные никуда не отправляются, QR-код условный.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="head"><h2>Зачем приходить</h2></div>
+    <div class="perks">
+      <div class="perk"><div class="n">9</div><h3>сортов на дегустации</h3><p>Попробуете больше, чем за полгода обычных заказов.</p></div>
+      <div class="perk"><div class="n">−15%</div><h3>на зерно и напитки</h3><p>Промокод всем участникам на 2 недели после фестиваля.</p></div>
+      <div class="perk"><div class="n">1</div><h3>кофемолка в розыгрыше</h3><p>Честный случайный выбор среди тех, кто отметился по билету.</p></div>
+    </div>
+  </div>
+</section>
+<div class="wrap" id="where">
+  <div class="where">
+    <div><span class="mono" style="color:rgba(255,255,255,.7)">Как добраться</span><h2 style="margin:14px 0 18px">Флагманская кофейня на Набережной</h2><p style="opacity:.85">Адрес вымышленный. 7 минут пешком от метро, вход со двора, ищите синий стакан на двери.</p><div style="margin-top:28px"><a class="btn btn-dark" href="#reg">Получить билет</a></div></div>
+    <div class="map" role="img" aria-label="Схема проезда"><span class="pin"></span></div>
+  </div>
+</div>
+<div class="wrap"><footer><span>© 2026 «Зерно·Точка» — демо-проект для портфолио, событие вымышленное</span><span>Дизайн и разработка — <a href="https://yarosh-anastasia.ru/">Анастасия Ярош</a></span></footer></div>
+<script>
+(function(){
+  var now=new Date(), y=now.getUTCFullYear();
+  var target=Date.UTC(y,11,14,9,0,0); if(target<now.getTime()) target=Date.UTC(y+1,11,14,9,0,0);
+  function pad(n){return String(n).padStart(2,'0')}
+  function tick(){var d=Math.max(0,target-Date.now());
+    document.getElementById('cd-d').textContent=Math.floor(d/864e5);
+    document.getElementById('cd-h').textContent=pad(Math.floor(d/36e5)%24);
+    document.getElementById('cd-m').textContent=pad(Math.floor(d/6e4)%60);
+    document.getElementById('cd-s').textContent=pad(Math.floor(d/1e3)%60);}
+  tick(); setInterval(tick,1000);
+  function drawQR(seed){var c=document.getElementById('qr'),x=c.getContext('2d'),n=21,s=Math.floor(132/n),h=0;
+    for(var i=0;i<seed.length;i++)h=(h*31+seed.charCodeAt(i))>>>0;
+    x.fillStyle='#fff';x.fillRect(0,0,132,132);x.fillStyle='#241812';
+    for(var r=0;r<n;r++)for(var k=0;k<n;k++){h^=h<<13;h^=h>>>17;h^=h<<5;h>>>=0;if(h%2)x.fillRect(3+k*s,3+r*s,s,s)}
+    [[0,0],[n-7,0],[0,n-7]].forEach(function(p){x.fillStyle='#241812';x.fillRect(3+p[0]*s,3+p[1]*s,7*s,7*s);x.fillStyle='#fff';x.fillRect(3+(p[0]+1)*s,3+(p[1]+1)*s,5*s,5*s);x.fillStyle='#241812';x.fillRect(3+(p[0]+2)*s,3+(p[1]+2)*s,3*s,3*s)})}
+  var f=document.getElementById('f'),err=document.getElementById('err');
+  f.addEventListener('submit',function(e){e.preventDefault();
+    var name=document.getElementById('name').value.trim(), phone=document.getElementById('phone').value.replace(/\D/g,'');
+    var slot=f.querySelector('input[name=slot]:checked');
+    if(!name){err.textContent='Напишите, как к вам обращаться';return}
+    if(phone.length<10){err.textContent='Проверьте телефон: нужно минимум 10 цифр';return}
+    if(!document.getElementById('ok').checked){err.textContent='Нужно согласие с правилами акции';return}
+    err.textContent='';
+    var label=slot.value==='none'?'нет, свободное посещение':slot.parentNode.children[1].textContent;
+    if(slot.dataset.left){var left=+slot.dataset.left-1;slot.dataset.left=left;var el=document.querySelector('[data-for='+slot.value+']');el.textContent=left>0?'осталось '+left:'мест нет';if(left<=0){slot.disabled=true;slot.parentNode.classList.add('full')}}
+    var no='ZT-'+String(Math.floor(1000+Math.random()*9000));
+    document.getElementById('t-no').textContent='№ '+no;
+    document.getElementById('t-name').textContent=name;
+    document.getElementById('t-slot').textContent=label;
+    drawQR(no+name);
+    document.getElementById('ph').style.display='none';
+    document.getElementById('ticket').classList.add('show');
+    document.getElementById('ticket').scrollIntoView({behavior:'smooth',block:'center'});
+  });
+})();
+</script>
+</body>
+</html>
