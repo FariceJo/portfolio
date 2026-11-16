@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Зерно·Точка — игра «Поймай зёрна» (демо Mini App)</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--roast:#241812;--milk:#F3ECE3;--cup:#2F4BFF;--crema:#C9A27E}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none}
+html,body{height:100%;overflow:hidden;background:var(--roast);color:var(--milk);font-family:-apple-system,BlinkMacSystemFont,Inter,Roboto,Arial,sans-serif;touch-action:none}
+.demo{position:fixed;top:0;left:0;right:0;background:#000;color:var(--crema);font-size:11px;text-align:center;padding:5px;z-index:3}
+canvas{position:fixed;inset:0;width:100%;height:100%}
+.hud{position:fixed;top:30px;left:14px;right:14px;display:flex;justify-content:space-between;font-weight:800;font-size:20px;z-index:2;pointer-events:none}
+.hud span{background:rgba(0,0,0,.35);padding:6px 12px;border-radius:12px}
+.scr{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;z-index:4;background:radial-gradient(circle at 50% 30%,#3a271d,#1a110c)}
+.scr.hide{display:none}
+h1{font-size:34px;font-weight:900;line-height:1.05}h1 b{color:var(--cup)}
+.scr p{opacity:.8;margin-top:12px;line-height:1.45;max-width:340px}
+.legend{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;margin:20px auto 0;text-align:left;font-size:15px;max-width:300px}
+.legend i{font-style:normal;font-size:26px}
+.btn{margin-top:24px;border:0;border-radius:16px;padding:17px 34px;font:800 17px inherit;background:var(--cup);color:#fff;cursor:pointer;min-width:240px}
+.btn:disabled{opacity:.35}
+.small{font-size:12px;opacity:.6;margin-top:14px;max-width:320px;line-height:1.4}
+.prize{margin-top:18px;background:var(--milk);color:var(--roast);border-radius:18px;padding:18px 22px;min-width:260px}
+.prize b{display:block;font-size:22px;margin-top:4px}.code{margin-top:10px;font:800 20px ui-monospace,monospace;letter-spacing:.12em;color:var(--cup)}
+.tiers{display:flex;gap:6px;margin-top:16px;font-size:12px}.tiers span{padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.08)}.tiers span.on{background:var(--cup)}
+</style></head><body>
+<div class="demo">Демо Mini App для портфолио · кофейня вымышленная · промокоды недействительны</div>
+<canvas id="c"></canvas>
+<div class="hud" id="hud" style="display:none"><span id="sc">0</span><span id="tm">25</span></div>
+
+<div class="scr" id="start"><h1>Поймай<br><b>зёрна</b></h1><p>Проведите пальцем по зёрнам, чтобы собрать их. 25 секунд — чем больше очков, тем лучше приз.</p>
+ <div class="legend"><i>🫘</i><span>зерно — +1</span><i>⭐</i><span>золотое зерно — +5</span><i>🪨</i><span>камешек — −3, не трогайте</span></div>
+ <button class="btn" id="go">Играть</button><div class="small" id="tries"></div>
+ <div class="tiers"><span>15+ → −10%</span><span>30+ → −20%</span><span>45+ → капучино</span></div></div>
+
+<div class="scr hide" id="end"><h1 id="eh">Отлично!</h1><p id="ep"></p><div class="prize" id="prize"></div><button class="btn" id="again">Ещё попытка</button>
+ <div class="small">Промокод придёт сообщением от бота. В рабочей версии — правила акции, лимит попыток на сервере и защита от накрутки.</div></div>
+
+<script>
+const tg=window.Telegram&&Telegram.WebApp; const inTg=!!(tg&&tg.platform&&tg.platform!=='unknown');
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');let W,H,DPR;
+function rs(){DPR=window.devicePixelRatio||1;W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0)}rs();addEventListener('resize',rs);
+const $=s=>document.getElementById(s);
+const K='zt_game_v1';const today=new Date().toDateString();let T;try{T=JSON.parse(localStorage.getItem(K))}catch(e){}if(!T||T.d!==today)T={d:today,n:3,best:0};
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(T))}catch(e){}};
+let items=[],parts=[],trail=[],score=0,left=25,running=false,last=0,spawnT=0,down=false,floats=[];
+function hap(t){try{t==='bad'?tg.HapticFeedback.notificationOccurred('error'):tg.HapticFeedback.impactOccurred('light')}catch(e){}}
+function spawn(){const r=Math.random();const type=r<.1?'gold':r<.27?'rock':'bean';const x=40+Math.random()*(W-80);
+ items.push({type,x,y:H+30,vx:(W/2-x)*.0025+(Math.random()-.5)*1.2,vy:-(H*.0125+Math.random()*H*.004),r:type==='gold'?24:26,rot:Math.random()*6,vr:(Math.random()-.5)*.12,hit:false})}
+const EM={bean:'🫘',gold:'⭐',rock:'🪨'};
+function slice(x,y){for(const it of items){if(it.hit)continue;if(Math.hypot(it.x-x,it.y-y)<it.r+14){it.hit=true;const pts=it.type==='gold'?5:it.type==='rock'?-3:1;score=Math.max(0,score+pts);hap(pts<0?'bad':'ok');
+ floats.push({x:it.x,y:it.y,t:pts>0?'+'+pts:String(pts),c:pts>0?(pts>1?'#FFD34D':'#F3ECE3'):'#FF6B6B',life:1});
+ for(let i=0;i<10;i++)parts.push({x:it.x,y:it.y,vx:(Math.random()-.5)*7,vy:(Math.random()-.8)*7,life:1,c:it.type==='rock'?'#888':it.type==='gold'?'#FFD34D':'#C9A27E'});
+ $('sc').textContent=score;}}}
+function pos(e){const t=e.touches?e.touches[0]:e;return[t.clientX,t.clientY]}
+cv.addEventListener('pointerdown',e=>{down=true;const[x,y]=pos(e);trail=[[x,y,1]];if(running)slice(x,y)});
+cv.addEventListener('pointermove',e=>{if(!down||!running)return;const[x,y]=pos(e);const p=trail[trail.length-1];if(p){const steps=Math.ceil(Math.hypot(x-p[0],y-p[1])/10);for(let i=1;i<=steps;i++)slice(p[0]+(x-p[0])*i/steps,p[1]+(y-p[1])*i/steps)}trail.push([x,y,1]);if(trail.length>14)trail.shift()});
+addEventListener('pointerup',()=>{down=false});
+function loop(t){const dt=Math.min(40,t-last||16)/16;last=t;
+ ctx.clearRect(0,0,W,H);const g=ctx.createRadialGradient(W/2,H*.3,20,W/2,H*.4,H);g.addColorStop(0,'#3a271d');g.addColorStop(1,'#140d09');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+ if(running){spawnT-=dt;if(spawnT<=0){spawn();if(Math.random()<.35)spawn();spawnT=24-Math.min(14,(25-left)*.6)}}
+ ctx.textAlign='center';ctx.textBaseline='middle';
+ for(const it of items){it.vy+=.16*dt*(H/800);it.x+=it.vx*dt;it.y+=it.vy*dt;it.rot+=it.vr*dt;if(it.hit)continue;
+  ctx.save();ctx.translate(it.x,it.y);ctx.rotate(it.rot);if(it.type==='gold'){ctx.shadowColor='#FFD34D';ctx.shadowBlur=20}ctx.font=(it.r*2)+'px serif';ctx.fillText(EM[it.type],0,0);ctx.restore()}
+ items=items.filter(it=>!it.hit&&it.y<H+60);
+ for(const p of parts){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=.3*dt;p.life-=.03*dt;ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(p.x,p.y,4,0,7);ctx.fill()}parts=parts.filter(p=>p.life>0);
+ for(const f of floats){f.y-=1.2*dt;f.life-=.025*dt;ctx.globalAlpha=Math.max(0,f.life);ctx.fillStyle=f.c;ctx.font='800 26px Inter,Arial';ctx.fillText(f.t,f.x,f.y)}floats=floats.filter(f=>f.life>0);ctx.globalAlpha=1;
+ trail.forEach(p=>p[2]-=.08*dt);trail=trail.filter(p=>p[2]>0);if(trail.length>1){ctx.strokeStyle='rgba(243,236,227,.85)';ctx.lineCap='round';for(let i=1;i<trail.length;i++){ctx.lineWidth=8*trail[i][2];ctx.beginPath();ctx.moveTo(trail[i-1][0],trail[i-1][1]);ctx.lineTo(trail[i][0],trail[i][1]);ctx.stroke()}}
+ requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+function upd(){$('tries').textContent=T.n>0?`Попыток сегодня: ${T.n} из 3`:'Попытки закончились — приходите завтра';$('go').disabled=T.n<=0;$('again').disabled=T.n<=0}
+let timer;
+function start(){if(T.n<=0)return;T.n--;save();score=0;left=25;items=[];$('sc').textContent=0;$('tm').textContent=left;$('start').classList.add('hide');$('end').classList.add('hide');$('hud').style.display='flex';running=true;
+ clearInterval(timer);timer=setInterval(()=>{left--;$('tm').textContent=left;if(left<=0)finish()},1000)}
+function finish(){clearInterval(timer);running=false;$('hud').style.display='none';T.best=Math.max(T.best,score);save();
+ const tier=score>=45?['Бесплатный капучино','FREECAP']:score>=30?['Скидка −20%','BEAN20']:score>=15?['Скидка −10%','BEAN10']:null;
+ $('eh').textContent=tier?'Приз ваш!':'Почти!';$('ep').textContent=`Вы набрали ${score} ${score%10===1&&score%100!==11?'очко':(score%10>=2&&score%10<=4&&(score%100<10||score%100>=20))?'очка':'очков'}. Лучший результат сегодня: ${T.best}.`;
+ $('prize').innerHTML=tier?`Ваш приз<b>${tier[0]}</b><div class="code">${tier[1]}-${Math.random().toString(36).slice(2,6).toUpperCase()}</div>`:'Наберите 15+ очков, чтобы получить скидку −10%';
+ try{tg.HapticFeedback.notificationOccurred(tier?'success':'warning')}catch(e){}
+ upd();$('end').classList.remove('hide')}
+$('go').onclick=start;$('again').onclick=start;
+if(inTg){tg.ready();tg.expand();try{tg.setHeaderColor('#241812');tg.setBackgroundColor('#241812');tg.disableVerticalSwipes&&tg.disableVerticalSwipes()}catch(e){}}
+upd();
+</script></body></html>
