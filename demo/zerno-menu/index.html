@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<title>Зерно·Точка — меню и заказ (демо Mini App)</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--roast:#241812;--milk:#F3ECE3;--cup:#2F4BFF;--crema:#C9A27E;--mute:#8b7b6e}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,Inter,Roboto,Arial,sans-serif;background:var(--milk);color:var(--roast);min-height:100vh;padding-bottom:110px}
+.demo{background:var(--roast);color:var(--crema);font-size:12px;text-align:center;padding:6px 10px}
+header{padding:16px 16px 4px;display:flex;justify-content:space-between;align-items:center}
+.brand{font-weight:800;font-size:22px}.brand b{color:var(--cup)}
+.mode{display:flex;background:#e6dccf;border-radius:12px;padding:3px}.mode button{border:0;background:none;padding:7px 10px;border-radius:9px;font:600 13px inherit;color:var(--mute)}.mode button.on{background:#fff;color:var(--roast)}
+.cats{display:flex;gap:8px;overflow-x:auto;padding:12px 16px;position:sticky;top:0;background:var(--milk);z-index:2;scrollbar-width:none}
+.cats button{flex:none;border:0;border-radius:20px;padding:9px 16px;background:#fff;font:600 14px inherit;color:var(--roast)}.cats button.on{background:var(--roast);color:#fff}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:4px 16px}
+.item{background:#fff;border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.pic{aspect-ratio:1.2;border-radius:14px;display:grid;place-items:center;font-size:44px}
+.item b{font-size:15px}.item small{color:var(--mute);font-size:12px;min-height:30px}
+.item .row{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+.add{border:0;background:var(--cup);color:#fff;border-radius:10px;width:34px;height:34px;font-size:20px}
+.qty{display:flex;align-items:center;gap:8px;font-weight:700}.qty button{border:0;background:#eee;border-radius:9px;width:28px;height:28px;font-size:16px}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;z-index:5}.sheet.on{display:flex}
+.panel{background:#fff;width:100%;border-radius:22px 22px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom));max-height:88vh;overflow:auto;animation:up .25s}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.panel h2{font-size:20px}.opts{margin-top:14px}.opts p{font-size:13px;color:var(--mute);margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}.chips button{border:1.5px solid #ddd;background:#fff;border-radius:12px;padding:9px 12px;font:600 14px inherit}.chips button.on{border-color:var(--cup);color:var(--cup)}
+.btn{border:0;border-radius:14px;padding:16px;font:700 16px inherit;background:var(--cup);color:#fff;width:100%;cursor:pointer}
+.btn.dark{background:var(--roast)}
+.cartbar{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));display:none}.cartbar.on{display:block}
+.tg .cartbar{display:none!important}
+.line{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px dashed #eee;font-size:14px}
+.line small{display:block;color:var(--mute)}
+.tot{display:flex;justify-content:space-between;font-size:19px;font-weight:800;margin:14px 0}
+input{width:100%;padding:13px;border-radius:12px;border:1px solid #ddd;font:inherit;margin:6px 0 12px}
+.track{padding:6px 0}.stp{display:flex;gap:12px;align-items:center;padding:10px 0;color:#bbb;font-weight:600}.stp i{width:28px;height:28px;border-radius:50%;background:#eee;display:grid;place-items:center;font-style:normal}
+.stp.on{color:var(--roast)}.stp.on i{background:var(--cup);color:#fff}
+.note{font-size:12px;color:var(--mute);margin-top:10px;line-height:1.45}
+</style></head><body>
+<div class="demo">Демо Mini App для портфолио · кофейня вымышленная · заказ не отправляется</div>
+<header><div class="brand">Зерно<b>·</b>Точка</div><div class="mode"><button class="on" data-m="Здесь">Здесь</button><button data-m="С собой">С собой</button></div></header>
+<div class="cats" id="cats"></div>
+<div class="grid" id="grid"></div>
+<div class="cartbar" id="cartbar"><button class="btn" id="openCart">Корзина</button></div>
+
+<div class="sheet" id="sheetItem"><div class="panel" id="itemPanel"></div></div>
+<div class="sheet" id="sheetCart"><div class="panel" id="cartPanel"></div></div>
+
+<script>
+const tg=window.Telegram&&Telegram.WebApp; const inTg=!!(tg&&tg.platform&&tg.platform!=='unknown');
+const MENU=[
+ {c:'Кофе',n:'Капучино',d:'Эспрессо и бархатное молоко',p:230,e:'☕',bg:'#EAD9C6',mod:true},
+ {c:'Кофе',n:'Флэт уайт',d:'Двойной ристретто',p:260,e:'☕',bg:'#E3CDB5',mod:true},
+ {c:'Кофе',n:'Раф ваниль',d:'Сливки и ваниль',p:290,e:'🥛',bg:'#F1E4D3',mod:true},
+ {c:'Кофе',n:'Фильтр дня',d:'Эфиопия, ягодный',p:210,e:'🫖',bg:'#DCC6AE',mod:false},
+ {c:'Не кофе',n:'Какао',d:'На бельгийском шоколаде',p:240,e:'🍫',bg:'#D8C0A8',mod:true},
+ {c:'Не кофе',n:'Матча латте',d:'Церемониальная матча',p:310,e:'🍵',bg:'#DCE6CF',mod:true},
+ {c:'Еда',n:'Круассан',d:'Сливочное масло',p:190,e:'🥐',bg:'#F2DFC0',mod:false},
+ {c:'Еда',n:'Сырник',d:'Со сметаной и ягодами',p:220,e:'🥞',bg:'#F4E6CF',mod:false},
+ {c:'Еда',n:'Сэндвич с индейкой',d:'Чиабатта, песто',p:340,e:'🥪',bg:'#EBDCC2',mod:false}];
+const SIZES=[['S',0],['M',40],['L',80]], MILK=[['Обычное',0],['Овсяное',60],['Миндальное',70],['Без лактозы',40]], SYR=[['Без сиропа',0],['Карамель',40],['Лесной орех',40]];
+let cat='Кофе', mode='Здесь', cart=[], cur=null, sel={};
+const $=s=>document.querySelector(s); const fmt=n=>n+' ₽';
+function hap(){try{tg.HapticFeedback.impactOccurred('light')}catch(e){}}
+function total(){return cart.reduce((s,x)=>s+x.price*x.q,0)}
+function count(){return cart.reduce((s,x)=>s+x.q,0)}
+function render(){
+ $('#cats').innerHTML=[...new Set(MENU.map(m=>m.c))].map(c=>`<button class="${c===cat?'on':''}" data-c="${c}">${c}</button>`).join('');
+ $('#cats').querySelectorAll('button').forEach(b=>b.onclick=()=>{cat=b.dataset.c;render()});
+ $('#grid').innerHTML=MENU.filter(m=>m.c===cat).map((m,i)=>{const idx=MENU.indexOf(m);const inC=cart.filter(x=>x.n===m.n).reduce((s,x)=>s+x.q,0);
+  return `<div class="item"><div class="pic" style="background:${m.bg}">${m.e}</div><b>${m.n}</b><small>${m.d}</small><div class="row"><span>${m.mod?'от ':''}${fmt(m.p)}</span>${inC&&!m.mod?`<div class="qty"><button data-m="${idx}">−</button>${inC}<button data-p="${idx}">+</button></div>`:`<button class="add" data-a="${idx}">+</button>`}</div></div>`}).join('');
+ $('#grid').querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>openItem(MENU[b.dataset.a]));
+ $('#grid').querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{addSimple(MENU[b.dataset.p])});
+ $('#grid').querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{const m=MENU[b.dataset.m];const x=cart.find(c=>c.n===m.n);x.q--;if(!x.q)cart.splice(cart.indexOf(x),1);hap();render()});
+ const n=count(); $('#cartbar').classList.toggle('on',n>0); $('#openCart').textContent=`Корзина · ${n} · ${fmt(total())}`;
+ if(inTg){if(n){tg.MainButton.setText(`Корзина · ${fmt(total())}`);tg.MainButton.show()}else tg.MainButton.hide();}
+}
+function addSimple(m){const x=cart.find(c=>c.n===m.n&&!c.opt);x?x.q++:cart.push({n:m.n,opt:'',price:m.p,q:1});hap();render()}
+function openItem(m){
+ if(!m.mod){addSimple(m);return}
+ cur=m; sel={s:'M',milk:'Обычное',syr:'Без сиропа'};
+ const draw=()=>{const price=m.p+SIZES.find(x=>x[0]===sel.s)[1]+MILK.find(x=>x[0]===sel.milk)[1]+SYR.find(x=>x[0]===sel.syr)[1];
+  const ch=(arr,k)=>`<div class="chips">${arr.map(([v,p])=>`<button class="${sel[k]===v?'on':''}" data-k="${k}" data-v="${v}">${v}${p?' +'+p:''}</button>`).join('')}</div>`;
+  $('#itemPanel').innerHTML=`<h2>${m.e} ${m.n}</h2><p class="note">${m.d}</p><div class="opts"><p>Объём</p>${ch(SIZES,'s')}<p>Молоко</p>${ch(MILK,'milk')}<p>Сироп</p>${ch(SYR,'syr')}</div><button class="btn" id="addBtn">Добавить · ${fmt(price)}</button>`;
+  $('#itemPanel').querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{sel[b.dataset.k]=b.dataset.v;hap();draw()});
+  $('#addBtn').onclick=()=>{const opt=[sel.s,sel.milk!=='Обычное'?sel.milk.toLowerCase()+' молоко':'',sel.syr!=='Без сиропа'?sel.syr.toLowerCase():''].filter(Boolean).join(', ');
+   const x=cart.find(c=>c.n===m.n&&c.opt===opt);x?x.q++:cart.push({n:m.n,opt,price,q:1});close();render()};};
+ draw(); $('#sheetItem').classList.add('on');
+}
+function close(){document.querySelectorAll('.sheet').forEach(s=>s.classList.remove('on'))}
+document.querySelectorAll('.sheet').forEach(s=>s.onclick=e=>{if(e.target===s)close()});
+function openCart(){
+ const u=inTg&&tg.initDataUnsafe&&tg.initDataUnsafe.user;
+ $('#cartPanel').innerHTML=`<h2>Ваш заказ · ${mode.toLowerCase()}</h2>${cart.map(x=>`<div class="line"><div><b>${x.q} × ${x.n}</b><small>${x.opt||' '}</small></div><b>${fmt(x.price*x.q)}</b></div>`).join('')}
+ <div class="tot"><span>Итого</span><span>${fmt(total())}</span></div>
+ ${mode==='Здесь'?'<p class="note">Номер столика</p><input id="table" inputmode="numeric" placeholder="Например, 4">':'<p class="note">Заберёте через</p><div class="chips" id="eta"><button class="on">10 мин</button><button>20 мин</button><button>30 мин</button></div>'}
+ <p class="note">Имя для заказа</p><input id="nm" value="${u?u.first_name:''}" placeholder="Как к вам обращаться">
+ <button class="btn dark" id="pay">Оформить заказ</button><p class="note">Оплата на кассе или в Telegram — в рабочей версии через ЮKassa.</p>`;
+ const eta=$('#eta');if(eta)eta.querySelectorAll('button').forEach(b=>b.onclick=()=>{eta.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))});
+ $('#pay').onclick=track; $('#sheetCart').classList.add('on');
+}
+function track(){
+ const no=Math.floor(100+Math.random()*800);const st=['Заказ принят','Бариста готовит','Готово — заберите у стойки'];
+ const draw=k=>{$('#cartPanel').innerHTML=`<h2>Заказ №${no}</h2><p class="note">${count()} поз. · ${fmt(total())} · ${mode.toLowerCase()}</p><div class="track">${st.map((s,i)=>`<div class="stp ${i<=k?'on':''}"><i>${i<k?'✓':i+1}</i>${s}</div>`).join('')}</div><p class="note">В рабочей версии заказ падает в чат баристы с кнопками «Готовлю» / «Готово», а гостю приходит сообщение от бота.</p>${k===2?'<button class="btn" id="again">Новый заказ</button>':''}`;
+  if(k===2){try{tg.HapticFeedback.notificationOccurred('success')}catch(e){};$('#again').onclick=()=>{cart=[];close();render()}}};
+ draw(0);setTimeout(()=>draw(1),1800);setTimeout(()=>draw(2),4200);
+}
+$('#openCart').onclick=openCart;
+document.querySelectorAll('.mode button').forEach(b=>b.onclick=()=>{mode=b.dataset.m;document.querySelectorAll('.mode button').forEach(x=>x.classList.toggle('on',x===b))});
+if(inTg){document.body.classList.add('tg');tg.ready();tg.expand();try{tg.setHeaderColor('#241812');tg.setBackgroundColor('#F3ECE3')}catch(e){}tg.MainButton.setParams({color:'#2F4BFF',text_color:'#ffffff'});tg.MainButton.onClick(()=>{if(!$('#sheetCart').classList.contains('on'))openCart()});}
+render();
+</script></body></html>
