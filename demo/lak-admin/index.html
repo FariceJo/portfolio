@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<title>Лак — кабинет владельца (демо Mini App)</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--wine:#6E1F33;--champ:#D9B88F;--milk:#F7EDEA;--ink:#1E1B18;--mute:#8a7a76;--line:#eadcd8}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,Inter,Roboto,Arial,sans-serif;background:var(--milk);color:var(--ink);padding-bottom:30px}
+.demo{background:var(--wine);color:var(--champ);font-size:12px;text-align:center;padding:6px 10px}
+header{padding:16px;display:flex;justify-content:space-between;align-items:center}
+h1{font:italic 24px Georgia,serif;color:var(--wine)}h1 small{display:block;font:13px -apple-system,Inter,sans-serif;color:var(--mute)}
+.tabs{display:flex;margin:0 16px;background:#ecdcd7;border-radius:14px;padding:4px}
+.tabs button{flex:1;border:0;background:none;padding:10px;border-radius:10px;font:600 14px inherit;color:var(--mute)}.tabs button.on{background:#fff;color:var(--wine)}
+.view{display:none;padding:14px 16px}.view.on{display:block}
+.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}.kpi div{background:#fff;border-radius:16px;padding:12px}.kpi b{display:block;font-size:20px;color:var(--wine)}.kpi span{font-size:11px;color:var(--mute)}
+.days{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;scrollbar-width:none}.days button{flex:none;border:0;background:#fff;border-radius:12px;padding:8px 12px;font:600 13px inherit}.days button.on{background:var(--wine);color:#fff}
+.cols{display:grid;grid-template-columns:44px 1fr 1fr;gap:6px;font-size:12px}
+.cols .hd{font-weight:700;color:var(--mute);text-align:center;padding:4px}
+.t{color:var(--mute);padding-top:10px;text-align:right;padding-right:4px}
+.cell{min-height:40px;border-radius:10px;background:#fff;border:1.5px dashed var(--line);padding:6px 8px;cursor:pointer;display:flex;flex-direction:column;justify-content:center}
+.cell.busy{background:var(--wine);color:#fff;border:0}.cell.busy small{opacity:.75}
+.cell.closed{background:repeating-linear-gradient(135deg,#eee 0 6px,#f6f6f6 6px 12px);border:0;color:#999}
+.cell b{font-size:12px}.cell small{font-size:11px}
+.legend{display:flex;gap:12px;font-size:12px;color:var(--mute);margin:10px 0}.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;vertical-align:-2px;margin-right:4px}
+.chart{background:#fff;border-radius:18px;padding:16px}
+.bars{display:flex;align-items:flex-end;gap:8px;height:150px;margin-top:10px}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:var(--mute)}
+.bar i{width:100%;border-radius:8px 8px 4px 4px;background:var(--wine);transition:height .5s}
+.bar i.today{background:var(--champ)}
+.list{background:#fff;border-radius:18px;padding:4px 14px;margin-top:12px}
+.li{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #f1e6e3;font-size:14px}.li:last-child{border:0}.li span{color:var(--mute)}
+.toast{position:fixed;left:16px;right:16px;bottom:20px;background:var(--ink);color:#fff;padding:14px;border-radius:14px;font-size:14px;opacity:0;transform:translateY(20px);transition:.25s;pointer-events:none}.toast.on{opacity:1;transform:none}
+.note{font-size:12px;color:var(--mute);margin-top:12px;line-height:1.45}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:flex-end}.sheet.on{display:flex}
+.panel{background:#fff;width:100%;border-radius:22px 22px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom))}
+.panel h2{font-size:19px;margin-bottom:6px}.panel p{color:var(--mute);font-size:14px;margin-bottom:14px}
+.btn{border:0;border-radius:14px;padding:15px;font:700 15px inherit;background:var(--wine);color:#fff;width:100%;margin-top:8px}.btn.l{background:#f3e9e6;color:var(--wine)}
+</style></head><body>
+<div class="demo">Демо Mini App для портфолио · студия и данные вымышленные</div>
+<header><h1>Лак<small>Кабинет владельца</small></h1><span id="now" style="font-size:13px;color:var(--mute)"></span></header>
+<div class="tabs"><button class="on" data-v="sch">Расписание</button><button data-v="stat">Выручка</button></div>
+
+<div class="view on" id="sch">
+ <div class="kpi"><div><b id="kCount">0</b><span>записей</span></div><div><b id="kSum">0</b><span>выручка дня</span></div><div><b id="kFree">0</b><span>свободных окон</span></div></div>
+ <div class="days" id="days"></div>
+ <div class="cols" id="grid"></div>
+ <div class="legend"><span><i style="background:var(--wine)"></i>запись</span><span><i style="border:1.5px dashed var(--line);background:#fff"></i>свободно</span><span><i style="background:#ddd"></i>закрыто</span></div>
+ <p class="note">Нажмите на окно: свободное можно закрыть, запись — отменить или отметить «пришла». В рабочей версии изменения сразу видны клиентам в Mini App записи.</p>
+</div>
+
+<div class="view" id="stat">
+ <div class="kpi"><div><b id="wSum">0</b><span>за 7 дней</span></div><div><b id="wAvg">0</b><span>средний чек</span></div><div><b id="wLoad">0%</b><span>загрузка</span></div></div>
+ <div class="chart"><b>Выручка по дням</b><div class="bars" id="bars"></div></div>
+ <div class="list" id="top"></div>
+</div>
+
+<div class="sheet" id="sheet"><div class="panel" id="panel"></div></div>
+<div class="toast" id="toast"></div>
+<script>
+const tg=window.Telegram&&Telegram.WebApp; const inTg=!!(tg&&tg.platform&&tg.platform!=='unknown');
+const $=s=>document.querySelector(s); const fmt=n=>n.toLocaleString('ru-RU')+' ₽';
+const TIMES=['10:00','11:30','13:00','14:30','16:00','17:30','19:00','20:30'], MS=['Анна','Мария'];
+const SV=[['Маникюр с покрытием',2200],['Педикюр',2800],['Наращивание',3500],['Снятие',500]];
+const NAMES=['Ольга','Ирина','Катя','Света','Дарья','Алина','Вика','Юля','Марина','Настя','Полина','Лена'];
+let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+const days=[];const today=new Date();for(let i=0;i<7;i++){const d=new Date(today);d.setDate(today.getDate()+i);days.push(d)}
+const S={};days.forEach((d,di)=>{S[di]={};MS.forEach(m=>{S[di][m]=TIMES.map(()=>{const r=rnd();if(r<.55){const s=SV[Math.floor(rnd()*SV.length)];return{st:'busy',c:NAMES[Math.floor(rnd()*NAMES.length)],s:s[0],p:s[1]}}return{st:r<.62?'closed':'free'}})})});
+let day=0;
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),1800)}
+function hap(){try{tg.HapticFeedback.impactOccurred('light')}catch(e){}}
+function render(){
+ $('#days').innerHTML=days.map((d,i)=>`<button class="${i===day?'on':''}" data-d="${i}">${i?d.toLocaleDateString('ru-RU',{weekday:'short',day:'numeric'}):'Сегодня'}</button>`).join('');
+ $('#days').querySelectorAll('button').forEach(b=>b.onclick=()=>{day=+b.dataset.d;render()});
+ let h='<div></div>'+MS.map(m=>`<div class="hd">${m}</div>`).join('');
+ TIMES.forEach((t,ti)=>{h+=`<div class="t">${t}</div>`;MS.forEach(m=>{const c=S[day][m][ti];h+=`<div class="cell ${c.st}" data-m="${m}" data-t="${ti}">${c.st==='busy'?`<b>${c.c}${c.came?' ✓':''}</b><small>${c.s}</small>`:c.st==='closed'?'<small>закрыто</small>':''}</div>`})});
+ $('#grid').innerHTML=h;$('#grid').querySelectorAll('.cell').forEach(e=>e.onclick=()=>act(e.dataset.m,+e.dataset.t));
+ const all=MS.flatMap(m=>S[day][m]);const busy=all.filter(c=>c.st==='busy');
+ $('#kCount').textContent=busy.length;$('#kSum').textContent=fmt(busy.reduce((s,c)=>s+c.p,0));$('#kFree').textContent=all.filter(c=>c.st==='free').length;
+ const sums=days.map((_,i)=>MS.flatMap(m=>S[i][m]).filter(c=>c.st==='busy').reduce((s,c)=>s+c.p,0));const max=Math.max(...sums);
+ $('#bars').innerHTML=sums.map((v,i)=>`<div class="bar"><span>${Math.round(v/1000)}к</span><i class="${i?'':'today'}" style="height:${Math.max(6,v/max*110)}px"></i>${i?days[i].toLocaleDateString('ru-RU',{weekday:'short'}):'сег'}</div>`).join('');
+ const wk=MS.flatMap(m=>days.flatMap((_,i)=>S[i][m])).filter(c=>c.st==='busy');const tot=wk.reduce((s,c)=>s+c.p,0);
+ $('#wSum').textContent=Math.round(tot/1000)+'к ₽';$('#wAvg').textContent=fmt(Math.round(tot/wk.length));$('#wLoad').textContent=Math.round(wk.length/(TIMES.length*MS.length*7)*100)+'%';
+ const by={};wk.forEach(c=>{by[c.s]=(by[c.s]||0)+c.p});$('#top').innerHTML='<div class="li"><b>Услуги за неделю</b></div>'+Object.entries(by).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="li"><span>${k}</span><b>${fmt(v)}</b></div>`).join('');
+}
+function act(m,ti){const c=S[day][m][ti];const t=TIMES[ti];hap();
+ let h=`<h2>${m} · ${t}</h2>`;
+ if(c.st==='busy')h+=`<p>${c.c} · ${c.s} · ${fmt(c.p)}</p><button class="btn" data-a="came">Клиентка пришла</button><button class="btn l" data-a="remind">Напомнить в Telegram</button><button class="btn l" data-a="cancel">Отменить запись</button>`;
+ else if(c.st==='free')h+=`<p>Окно свободно и видно клиентам</p><button class="btn" data-a="close">Закрыть окно</button><button class="btn l" data-a="add">Записать вручную</button>`;
+ else h+=`<p>Окно закрыто для записи</p><button class="btn" data-a="open">Открыть окно</button>`;
+ $('#panel').innerHTML=h;$('#sheet').classList.add('on');
+ $('#panel').querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const a=b.dataset.a;
+  if(a==='came'){c.came=true;toast('Отмечено: визит состоялся, бот попросит оценить мастера')}
+  if(a==='remind')toast(`Напоминание отправлено: ${c.c}, ${t}`);
+  if(a==='cancel'){S[day][m][ti]={st:'free'};toast('Запись отменена, окно снова доступно клиентам')}
+  if(a==='close'){c.st='closed';toast('Окно закрыто')}
+  if(a==='open'){c.st='free';toast('Окно открыто для записи')}
+  if(a==='add'){S[day][m][ti]={st:'busy',c:'Новая клиентка',s:'Маникюр с покрытием',p:2200};toast('Запись добавлена')}
+  $('#sheet').classList.remove('on');render()})}
+$('#sheet').onclick=e=>{if(e.target.id==='sheet')e.target.classList.remove('on')};
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id===b.dataset.v))});
+$('#now').textContent=today.toLocaleDateString('ru-RU',{day:'numeric',month:'long'});
+if(inTg){tg.ready();tg.expand();try{tg.setHeaderColor('#6E1F33');tg.setBackgroundColor('#F7EDEA')}catch(e){}}
+render();
+</script></body></html>
