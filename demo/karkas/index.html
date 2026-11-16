@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ДомКаркас — каркасные дома для жизни под ключ</title>
+<meta name="description" content="Демо-проект: лендинг строительной компании с квизом-калькулятором стоимости дома.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7F8F6;
+  --ink:#14202E;
+  --blue:#1D4E89;
+  --wood:#C98B4A;
+  --muted:#5E6B78;
+  --grid:#E3E8EE;
+  --card:#FFFFFF;
+  --display:"Manrope", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, monospace;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font:400 17px/1.6 var(--display);background:var(--paper) linear-gradient(var(--grid) 1px,transparent 1px) 0 0/32px 32px,linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/32px 32px;background-color:var(--paper)}
+h1,h2,h3{margin:0;line-height:1.05;letter-spacing:-.03em;font-weight:800;text-wrap:balance}
+p{margin:0}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.demo{background:var(--ink);color:#fff;text-align:center;font-size:13px;padding:7px 16px}
+.demo a{color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:6px;padding:17px 26px;font:700 16px/1 var(--display);cursor:pointer;text-decoration:none}
+.btn:focus-visible,.opt:focus-within,input:focus-visible{outline:3px solid var(--wood);outline-offset:2px}
+.btn-wood{background:var(--wood);color:#fff}
+.btn-wood:hover{background:#B57A3C}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-ghost{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;gap:16px}
+.logo{font-weight:800;font-size:22px;text-decoration:none;display:flex;gap:10px;align-items:center}
+.logo i{width:28px;height:24px;background:var(--wood);clip-path:polygon(50% 0,100% 45%,100% 100%,0 100%,0 45%)}
+nav .links{display:flex;gap:26px;font-size:15px}
+nav .links a{text-decoration:none;color:var(--muted)}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:48px 0 80px}
+.hero h1{font-size:clamp(42px,6vw,80px)}
+.hero h1 em{font-style:normal;color:var(--blue)}
+.lead{font-size:19px;color:var(--muted);margin-top:22px;max-width:30em}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:32px}
+.facts div{background:var(--card);border:1px solid var(--grid);border-radius:8px;padding:16px}
+.facts b{display:block;font-size:26px}
+.facts span{font-size:13px;color:var(--muted)}
+.drawing{background:var(--card);border:1px solid var(--grid);border-radius:12px;padding:20px}
+.drawing svg{width:100%;height:auto;display:block}
+section{padding:88px 0}
+.head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:36px}
+.head h2{font-size:clamp(32px,4.4vw,54px)}
+.head p{max-width:28em;color:var(--muted)}
+.quiz{background:var(--card);border:1px solid var(--grid);border-radius:16px;display:grid;grid-template-columns:280px 1fr;overflow:hidden;box-shadow:0 30px 60px -40px rgba(20,32,46,.4)}
+.side{background:var(--ink);color:#fff;padding:32px}
+.side ol{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:12px}
+.side li{display:flex;gap:12px;align-items:center;font-size:15px;color:rgba(255,255,255,.55)}
+.side li b{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;border:1.5px solid rgba(255,255,255,.35);font-size:13px}
+.side li.on{color:#fff}.side li.on b{background:var(--wood);border-color:var(--wood)}
+.side li.done b{background:#fff;color:var(--ink);border-color:#fff}
+.main{padding:36px}
+.step{display:none}.step.on{display:block}
+.step h3{font-size:28px;margin-bottom:6px}
+.step .hint{color:var(--muted);margin-bottom:22px}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.opt{position:relative;border:1.5px solid var(--grid);border-radius:10px;padding:18px;cursor:pointer;background:#fff}
+.opt input{position:absolute;opacity:0}
+.opt b{display:block;font-size:17px}
+.opt span{font-size:14px;color:var(--muted)}
+.opt:has(input:checked){border-color:var(--blue);background:#EEF4FB;box-shadow:inset 0 0 0 1px var(--blue)}
+.range{display:grid;gap:10px}
+.range output{font-size:44px;font-weight:800;color:var(--blue)}
+input[type=range]{width:100%;accent-color:var(--blue)}
+.nav-btns{display:flex;justify-content:space-between;margin-top:28px;gap:12px}
+.result{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.price{background:#EEF4FB;border-radius:12px;padding:24px}
+.price .val{font-size:clamp(30px,3.6vw,44px);font-weight:800;color:var(--blue);font-variant-numeric:tabular-nums}
+.price ul{margin:14px 0 0;padding-left:18px;color:var(--muted);font-size:15px}
+.hot{display:inline-block;margin-top:14px;font-family:var(--mono);font-size:12px;padding:6px 10px;border-radius:4px;background:var(--wood);color:#fff}
+form{display:grid;gap:12px}
+label{font-size:13px;font-weight:700}
+input[type=text],input[type=tel]{width:100%;padding:15px;border:1.5px solid var(--grid);border-radius:8px;font:400 17px var(--display)}
+.ok{display:none;background:var(--ink);color:#fff;padding:18px;border-radius:10px}
+.ok.show{display:block}
+.projects{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.proj{background:var(--card);border:1px solid var(--grid);border-radius:12px;overflow:hidden}
+.proj svg{display:block;width:100%;height:auto;background:#F1F4F8}
+.proj .b{padding:18px}
+.proj h3{font-size:20px;letter-spacing:-.01em}
+.proj .row{display:flex;justify-content:space-between;color:var(--muted);font-size:14px;margin-top:6px}
+.proj .p{font-weight:800;margin-top:10px;font-size:18px}
+.stages{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-top:2px solid var(--blue)}
+.st{padding:22px 18px 0 0;position:relative}
+.st::before{content:"";position:absolute;top:-8px;left:0;width:14px;height:14px;border-radius:50%;background:var(--blue)}
+.st .w{font-family:var(--mono);color:var(--blue);font-size:13px}
+.st h3{font-size:18px;margin:8px 0 6px;letter-spacing:-.01em}
+.st p{font-size:14px;color:var(--muted)}
+footer{padding:40px 0 60px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+@media (max-width:960px){
+  .hero,.result{grid-template-columns:1fr}
+  .quiz{grid-template-columns:1fr}
+  .side ol{grid-template-columns:repeat(3,1fr)}
+  .projects{grid-template-columns:1fr 1fr}
+  .stages{grid-template-columns:1fr;border-top:0;border-left:2px solid var(--blue);gap:18px}
+  .st{padding:0 0 0 22px}.st::before{left:-8px;top:4px}
+  nav .links{display:none}
+}
+@media (max-width:520px){.projects,.facts{grid-template-columns:1fr}.main,.side{padding:22px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="demo">Демо-проект для портфолио · компания и цены вымышленные · сайт — <a href="https://yarosh-anastasia.ru/">Анастасия Ярош</a></div>
+<div class="wrap">
+  <nav>
+    <a class="logo" href="#top"><i aria-hidden="true"></i>ДомКаркас</a>
+    <div class="links"><a href="#calc">Расчёт</a><a href="#projects">Проекты</a><a href="#stages">Этапы</a></div>
+    <a class="btn btn-ghost" href="#calc">Рассчитать дом</a>
+  </nav>
+  <header class="hero" id="top">
+    <div>
+      <span class="mono" style="color:var(--blue)">Каркасные дома для жизни круглый год</span>
+      <h1 style="margin-top:14px">Тёплый дом за <em>4 месяца</em> — с фиксированной сметой</h1>
+      <p class="lead">Ответьте на 5 вопросов — покажем вилку стоимости и 2 подходящих проекта. Без звонка, если не хотите.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:30px"><a class="btn btn-wood" href="#calc">Рассчитать за 1 минуту</a><a class="btn btn-ghost" href="#projects">Смотреть проекты</a></div>
+      <div class="facts"><div><b>4 мес.</b><span>от фундамента до ключей</span></div><div><b>200 мм</b><span>утепление стен</span></div><div><b>5 лет</b><span>гарантия на каркас</span></div></div>
+    </div>
+    <div class="drawing" aria-label="Чертёж фасада дома">
+      <svg viewBox="0 0 480 360" role="img" aria-label="Фасад каркасного дома с размерами">
+        <g fill="none" stroke="#14202E" stroke-width="2">
+          <path d="M70 300 V170 L240 60 L410 170 V300 Z"/>
+          <path d="M70 170 H410" stroke-dasharray="6 6" stroke="#1D4E89"/>
+          <rect x="110" y="200" width="70" height="60"/><path d="M145 200 V260 M110 230 H180"/>
+          <rect x="300" y="200" width="70" height="60"/><path d="M335 200 V260 M300 230 H370"/>
+          <rect x="210" y="210" width="60" height="90"/>
+          <rect x="215" y="110" width="50" height="40"/>
+        </g>
+        <path d="M60 300 H420" stroke="#C98B4A" stroke-width="6"/>
+        <g stroke="#1D4E89" stroke-width="1.5" fill="#1D4E89" font-family="IBM Plex Mono, monospace" font-size="13">
+          <path d="M70 330 H410 M70 322 V338 M410 322 V338"/>
+          <text x="240" y="352" text-anchor="middle" stroke="none">10 400</text>
+          <path d="M440 60 V300 M432 60 H448 M432 300 H448"/>
+          <text x="452" y="185" stroke="none" transform="rotate(90 452 185)" text-anchor="middle">7 200</text>
+        </g>
+        <text x="70" y="40" font-family="IBM Plex Mono, monospace" font-size="12" fill="#5E6B78">ФАСАД А · М 1:100 · ПРОЕКТ «СЕВЕР-120»</text>
+      </svg>
+    </div>
+  </header>
+</div>
+<section id="calc" style="padding-top:20px">
+  <div class="wrap">
+    <div class="head"><h2>Сколько будет стоить ваш дом</h2><p>Расчёт ориентировочный: точную смету составит инженер после выезда на участок.</p></div>
+    <div class="quiz">
+      <aside class="side">
+        <span class="mono" style="color:rgba(255,255,255,.6)">Лист расчёта</span>
+        <ol id="prog"><li class="on"><b>1</b>Площадь</li><li><b>2</b>Этажность</li><li><b>3</b>Сезон</li><li><b>4</b>Участок</li><li><b>5</b>Старт</li><li><b>✓</b>Итог</li></ol>
+      </aside>
+      <div class="main">
+        <div class="step on" data-s="1"><h3>Какая площадь нужна?</h3><p class="hint">Для семьи из 3–4 человек обычно хватает 100–130 м².</p>
+          <div class="range"><output id="areaOut">110 м²</output><input type="range" id="area" min="50" max="220" step="10" value="110" aria-label="Площадь дома в квадратных метрах"><div style="display:flex;justify-content:space-between;color:var(--muted);font-size:13px"><span>50 м²</span><span>220 м²</span></div></div></div>
+        <div class="step" data-s="2"><h3>Сколько этажей?</h3><p class="hint">Двухэтажный дом дешевле на квадратный метр, но нужен лестничный пролёт.</p>
+          <div class="opts"><label class="opt"><input type="radio" name="fl" value="1" checked><b>Один этаж</b><span>всё на одном уровне</span></label><label class="opt"><input type="radio" name="fl" value="1.5"><b>С мансардой</b><span>спальни под крышей</span></label><label class="opt"><input type="radio" name="fl" value="2"><b>Два этажа</b><span>компактный фундамент</span></label></div></div>
+        <div class="step" data-s="3"><h3>Как будете жить?</h3><p class="hint">От этого зависит утепление и инженерия.</p>
+          <div class="opts"><label class="opt"><input type="radio" name="se" value="year" checked><b>Круглый год</b><span>200 мм утепления, отопление</span></label><label class="opt"><input type="radio" name="se" value="summer"><b>Дача на лето</b><span>150 мм, без котла</span></label></div></div>
+        <div class="step" data-s="4"><h3>Участок уже есть?</h3><p class="hint">Поможем с выбором и проверкой грунта.</p>
+          <div class="opts"><label class="opt"><input type="radio" name="pl" value="yes" checked><b>Да, есть</b><span>можно ехать на замер</span></label><label class="opt"><input type="radio" name="pl" value="buy"><b>Покупаю</b><span>в процессе сделки</span></label><label class="opt"><input type="radio" name="pl" value="no"><b>Пока нет</b><span>присматриваюсь</span></label></div></div>
+        <div class="step" data-s="5"><h3>Когда хотите начать?</h3><p class="hint">Зимой строим тоже — фундамент на винтовых сваях.</p>
+          <div class="opts"><label class="opt"><input type="radio" name="sta" value="now" checked><b>В этом сезоне</b><span>в ближайшие 3 месяца</span></label><label class="opt"><input type="radio" name="sta" value="half"><b>Через полгода</b><span>планирую</span></label><label class="opt"><input type="radio" name="sta" value="look"><b>Присматриваюсь</b><span>пока изучаю</span></label></div></div>
+        <div class="step" data-s="6"><h3>Ваш предварительный расчёт</h3><p class="hint">Цены вымышленные — это демо.</p>
+          <div class="result">
+            <div class="price"><span class="mono" style="color:var(--blue)">Дом под ключ</span><div class="val" id="val">—</div><ul id="spec"></ul><span class="hot" id="hot" hidden>Приоритетный выезд инженера</span></div>
+            <div><form id="lead" novalidate><label for="nm">Имя</label><input id="nm" type="text" autocomplete="given-name" placeholder="Как к вам обращаться"><label for="ph">Телефон</label><input id="ph" type="tel" autocomplete="tel" placeholder="+7 900 000-00-00"><button class="btn btn-wood" type="submit">Получить точную смету</button><p style="font-size:12.5px;color:var(--muted)">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных.</p></form>
+            <div class="ok" id="ok" role="status">Спасибо! Это демо: заявка никуда не отправлена. На реальном сайте она пришла бы менеджеру в CRM с меткой «горячий/тёплый/холодный».</div></div>
+          </div></div>
+        <div class="nav-btns"><button class="btn btn-ghost" id="back" type="button">Назад</button><button class="btn btn-blue" id="next" type="button">Дальше</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="projects">
+  <div class="wrap">
+    <div class="head"><h2>Популярные проекты</h2><p>Любой можно изменить под ваш участок: развернуть, добавить террасу или второй санузел.</p></div>
+    <div class="projects" id="pj"></div>
+  </div>
+</section>
+<section id="stages" style="padding-top:20px">
+  <div class="wrap">
+    <div class="head"><h2>Как строим</h2><p>Каждый этап фиксируем в договоре и фотоотчёте — можно не ездить на стройку.</p></div>
+    <div class="stages">
+      <div class="st"><span class="w">Неделя 1</span><h3>Договор и смета</h3><p>Фиксируем цену и график платежей.</p></div>
+      <div class="st"><span class="w">Неделя 2–3</span><h3>Фундамент</h3><p>Винтовые сваи или плита — по геологии.</p></div>
+      <div class="st"><span class="w">Неделя 4–9</span><h3>Каркас и кровля</h3><p>Камерная сушка, антисептик, мембраны.</p></div>
+      <div class="st"><span class="w">Неделя 10–14</span><h3>Инженерия</h3><p>Электрика, отопление, вода, канализация.</p></div>
+      <div class="st"><span class="w">Неделя 15–17</span><h3>Отделка и ключи</h3><p>Финальная приёмка по чек-листу.</p></div>
+    </div>
+  </div>
+</section>
+<div class="wrap"><footer><span>© 2026 «ДомКаркас» — демо-проект для портфолио, компания и цены вымышленные</span><span>Дизайн и разработка — <a href="https://yarosh-anastasia.ru/">Анастасия Ярош</a></span></footer></div>
+<script>
+(function(){
+  var projects=[{n:'Север-90',a:90,f:'1 этаж',r:'2 спальни',p:4.1,roof:'gable'},{n:'Север-120',a:120,f:'мансарда',r:'3 спальни',p:5.3,roof:'tall'},{n:'Бор-140',a:140,f:'2 этажа',r:'4 спальни',p:6.2,roof:'two'},{n:'Озеро-75',a:75,f:'1 этаж',r:'терраса 20 м²',p:3.4,roof:'flat'}];
+  function house(t){var roof={gable:'M30 90 L110 40 L190 90',tall:'M40 95 L110 25 L180 95',two:'M30 60 L110 20 L190 60',flat:'M25 70 H195'}[t];
+    var body=t==='two'?'<rect x="40" y="60" width="140" height="80" fill="none" stroke="#14202E" stroke-width="2"/><path d="M40 100 H180" stroke="#1D4E89" stroke-dasharray="4 4"/>':'<rect x="40" y="'+(t==='flat'?70:90)+'" width="140" height="'+(t==='flat'?70:50)+'" fill="none" stroke="#14202E" stroke-width="2"/>';
+    return '<svg viewBox="0 0 220 160" aria-hidden="true"><path d="'+roof+'" fill="none" stroke="#14202E" stroke-width="2"/>'+body+'<rect x="98" y="108" width="24" height="32" fill="#C98B4A"/><path d="M20 140 H200" stroke="#C98B4A" stroke-width="4"/></svg>'}
+  document.getElementById('pj').innerHTML=projects.map(function(p){return '<article class="proj">'+house(p.roof)+'<div class="b"><h3>'+p.n+'</h3><div class="row"><span>'+p.a+' м² · '+p.f+'</span><span>'+p.r+'</span></div><div class="p">от '+p.p.toFixed(1).replace('.',',')+' млн ₽</div></div></article>'}).join('');
+  var step=1,max=6,area=document.getElementById('area'),out=document.getElementById('areaOut');
+  area.addEventListener('input',function(){out.textContent=area.value+' м²'});
+  var steps=document.querySelectorAll('.step'),prog=document.querySelectorAll('#prog li'),back=document.getElementById('back'),next=document.getElementById('next');
+  function val(n){var e=document.querySelector('input[name='+n+']:checked');return e?e.value:null}
+  function fmt(x){return (Math.round(x/0.1)*0.1).toFixed(1).replace('.',',')}
+  function calc(){var a=+area.value, base={'1':44000,'1.5':41000,'2':39000}[val('fl')], k=val('se')==='summer'?0.82:1;
+    var lo=a*base*k/1e6, hi=lo*1.18;
+    document.getElementById('val').textContent=fmt(lo)+'–'+fmt(hi)+' млн ₽';
+    var flTxt={'1':'одноэтажный','1.5':'с мансардой','2':'двухэтажный'}[val('fl')];
+    document.getElementById('spec').innerHTML='<li>'+a+' м², '+flTxt+'</li><li>'+(val('se')==='summer'?'летний, утепление 150 мм':'для жизни круглый год, утепление 200 мм')+'</li><li>фундамент, каркас, кровля, окна, инженерия</li>';
+    document.getElementById('hot').hidden=!(val('pl')==='yes'&&val('sta')==='now');}
+  function show(){steps.forEach(function(s){s.classList.toggle('on',+s.dataset.s===step)});
+    prog.forEach(function(li,i){li.classList.toggle('on',i+1===step);li.classList.toggle('done',i+1<step)});
+    back.style.visibility=step===1?'hidden':'visible';next.style.display=step===max?'none':'inline-flex';
+    next.textContent=step===max-1?'Показать расчёт':'Дальше'; if(step===max)calc();}
+  next.addEventListener('click',function(){if(step<max){step++;show()}});
+  back.addEventListener('click',function(){if(step>1){step--;show()}});
+  show();
+  document.getElementById('lead').addEventListener('submit',function(e){e.preventDefault();
+    var n=document.getElementById('nm'),p=document.getElementById('ph');
+    if(!n.value.trim()){n.focus();return} if(p.value.replace(/\D/g,'').length<10){p.focus();p.setCustomValidity('Минимум 10 цифр');p.reportValidity();p.setCustomValidity('');return}
+    this.style.display='none';document.getElementById('ok').classList.add('show');});
+})();
+</script>
+</body>
+</html>
