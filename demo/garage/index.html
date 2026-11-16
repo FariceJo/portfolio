@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Гараж 24 — автосервис с онлайн-записью</title>
+<meta name="description" content="Демо-проект: сайт автосервиса с калькулятором стоимости и онлайн-записью на свободное время.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter+Tight:wght@400;500;600&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --asphalt:#17191D;
+  --steel:#24272D;
+  --chrome:#E9EAEC;
+  --signal:#FF6A1A;
+  --muted:#9AA0A8;
+  --line:#33373F;
+  --ok:#3DBE7A;
+  --display:"Oswald", "Arial Narrow", sans-serif;
+  --body:"Inter Tight", system-ui, sans-serif;
+  --mono:"Roboto Mono", ui-monospace, monospace;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--asphalt);color:var(--chrome);font:400 17px/1.55 var(--body)}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);font-weight:700;text-transform:uppercase;line-height:.98;margin:0;letter-spacing:.005em;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.demo{background:var(--signal);color:#111;text-align:center;font-size:13px;font-weight:600;padding:7px 16px}
+.demo a{color:#111}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:4px;padding:18px 26px;font:600 16px/1 var(--body);cursor:pointer;text-decoration:none;text-transform:uppercase;letter-spacing:.04em}
+.btn:focus-visible,select:focus-visible,input:focus-visible,.svc:focus-within,.time:focus-within{outline:3px solid var(--signal);outline-offset:2px}
+.btn-signal{background:var(--signal);color:#111}
+.btn-signal:hover{background:#FF8442}
+.btn-line{background:transparent;color:var(--chrome);box-shadow:inset 0 0 0 1.5px var(--line)}
+nav{display:flex;align-items:center;justify-content:space-between;padding:20px 0;gap:16px}
+.logo{font-family:var(--display);font-size:28px;text-decoration:none;letter-spacing:.02em}
+.logo span{color:var(--signal)}
+nav .links{display:flex;gap:26px;font-size:15px}
+nav .links a{text-decoration:none;color:var(--muted)}
+.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;padding:40px 0 80px;align-items:center}
+.hero h1{font-size:clamp(52px,8vw,118px)}
+.hero h1 span{color:var(--signal)}
+.lead{font-size:19px;color:var(--muted);max-width:30em;margin-top:22px}
+.board{background:var(--steel);border:1px solid var(--line);border-radius:8px;padding:22px;font-family:var(--mono)}
+.board .row{display:grid;grid-template-columns:70px 1fr auto;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;align-items:center}
+.board .row:last-child{border-bottom:0}
+.st{font-size:12px;padding:4px 8px;border-radius:3px}
+.st.work{background:rgba(255,106,26,.15);color:var(--signal)}
+.st.done{background:rgba(61,190,122,.15);color:var(--ok)}
+.st.wait{background:rgba(154,160,168,.15);color:var(--muted)}
+section{padding:88px 0}
+.head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:36px}
+.head h2{font-size:clamp(38px,5vw,64px)}
+.head p{max-width:28em;color:var(--muted)}
+.book{display:grid;grid-template-columns:1.3fr .7fr;gap:24px;align-items:start}
+.book>*,.hero>*{min-width:0}
+.panel{background:var(--steel);border:1px solid var(--line);border-radius:8px;padding:28px}
+.panel h3{font-size:22px;margin-bottom:14px;display:flex;gap:12px;align-items:center}
+.panel h3 i{font-style:normal;font-family:var(--mono);font-size:12px;color:#111;background:var(--signal);border-radius:3px;padding:3px 7px}
+.panel+.panel{margin-top:16px}
+.svcs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.svc{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;border:1.5px solid var(--line);border-radius:6px;padding:14px;cursor:pointer}
+.svc input{accent-color:var(--signal);width:18px;height:18px}
+.svc:has(input:checked){border-color:var(--signal);background:rgba(255,106,26,.06)}
+.svc small{display:block;color:var(--muted);font-size:13px}
+.svc .pr{font-family:var(--mono);font-size:14px;white-space:nowrap}
+select,input[type=text],input[type=tel]{width:100%;background:var(--asphalt);color:var(--chrome);border:1.5px solid var(--line);border-radius:6px;padding:15px;font:400 16px var(--body)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label.l{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.day{flex:none;border:1.5px solid var(--line);border-radius:6px;padding:10px 14px;text-align:center;cursor:pointer;background:transparent;color:var(--chrome);font:inherit}
+.day b{display:block;font-family:var(--display);font-size:22px}
+.day small{color:var(--muted);font-size:12px;text-transform:uppercase}
+.day[aria-pressed=true]{border-color:var(--signal);background:rgba(255,106,26,.08)}
+.times{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;margin-top:14px}
+.time{position:relative}
+.time input{position:absolute;opacity:0}
+.time span{display:block;text-align:center;border:1.5px solid var(--line);border-radius:6px;padding:10px 0;font-family:var(--mono);font-size:14px;cursor:pointer}
+.time input:checked+span{border-color:var(--signal);color:var(--signal)}
+.time input:disabled+span{opacity:.3;text-decoration:line-through;cursor:not-allowed}
+.order{position:sticky;top:20px;background:var(--chrome);color:var(--asphalt);border-radius:8px;padding:26px;font-size:15px}
+.order h3{font-size:26px}
+.order .no{font-family:var(--mono);font-size:12px;color:#666;margin-top:4px}
+.order table{width:100%;border-collapse:collapse;margin:18px 0;font-variant-numeric:tabular-nums}
+.order td{padding:8px 0;border-bottom:1px dashed #C9CBCF;vertical-align:top}
+.order td:last-child{text-align:right;font-family:var(--mono);white-space:nowrap}
+.order .tot{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--display);font-size:34px;text-transform:uppercase}
+.order .when{font-family:var(--mono);font-size:13px;margin-top:6px;color:#444}
+.order .err{color:#C0362C;font-size:14px;min-height:20px;margin:10px 0}
+.order .ok{display:none;background:var(--asphalt);color:var(--chrome);border-radius:6px;padding:16px;margin-top:12px;font-size:14px}
+.order .ok.show{display:block}
+.empty{color:#777}
+.why{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.why div{background:var(--asphalt);padding:26px}
+.why b{display:block;font-family:var(--display);font-size:46px;color:var(--signal)}
+.why h3{font-family:var(--body);text-transform:none;font-size:18px;font-weight:600;margin:6px 0}
+.why p{color:var(--muted);font-size:15px}
+.prices{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.prices th,.prices td{padding:16px 12px;border-bottom:1px solid var(--line);text-align:left}
+.prices th{font-family:var(--mono);font-size:12px;color:var(--muted);text-transform:uppercase;font-weight:500}
+.prices td:not(:first-child),.prices th:not(:first-child){text-align:right;font-family:var(--mono)}
+.tbl{overflow-x:auto}
+footer{padding:40px 0 60px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@media (max-width:960px){
+  .hero,.book{grid-template-columns:1fr}
+  .why{grid-template-columns:1fr 1fr}
+  .order{position:static}
+  nav .links{display:none}
+}
+@media (max-width:560px){.svcs,.grid2,.why{grid-template-columns:1fr}.hero h1{font-size:44px}.panel{padding:20px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="demo">Демо-проект для портфолио · автосервис и цены вымышленные · сайт — <a href="https://yarosh-anastasia.ru/">Анастасия Ярош</a></div>
+<div class="wrap">
+  <nav>
+    <a class="logo" href="#top">Гараж<span>24</span></a>
+    <div class="links"><a href="#book">Запись</a><a href="#prices">Цены</a><a href="#why">Почему мы</a></div>
+    <a class="btn btn-signal" href="#book">Записаться</a>
+  </nav>
+  <header class="hero" id="top">
+    <div>
+      <span class="mono" style="color:var(--signal)">Автосервис · ТО · ремонт · шиномонтаж</span>
+      <h1 style="margin-top:14px">Запишитесь<br>за <span>30 секунд</span>.<br>Цена — сразу.</h1>
+      <p class="lead">Выберите работы и свободное окно — стоимость посчитается до визита. В боксе не появятся «а ещё мы нашли»: всё дополнительное — только после вашего «да» в Telegram.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:30px"><a class="btn btn-signal" href="#book">Выбрать время</a><a class="btn btn-line" href="#prices">Прайс</a></div>
+    </div>
+    <div class="board" aria-label="Табло загрузки боксов">
+      <span class="mono" style="color:var(--muted)">Сегодня в боксах</span>
+      <div class="row"><span>Бокс 1</span><span>Kia Rio · замена масла</span><span class="st work">в работе</span></div>
+      <div class="row"><span>Бокс 2</span><span>VW Polo · колодки</span><span class="st done">готово</span></div>
+      <div class="row"><span>Бокс 3</span><span>свободен с 15:00</span><span class="st wait">окно</span></div>
+      <div class="row"><span>Шины</span><span>очередь 0 машин</span><span class="st done">свободно</span></div>
+    </div>
+  </header>
+</div>
+<section id="book" style="padding-top:20px">
+  <div class="wrap">
+    <div class="head"><h2>Онлайн-запись</h2><p>Время держим за вами 15 минут после записи. Перенести или отменить можно в Telegram-боте.</p></div>
+    <div class="book">
+      <div>
+        <div class="panel"><h3><i>01</i>Какие работы нужны</h3>
+          <div class="svcs" id="svcs"></div></div>
+        <div class="panel"><h3><i>02</i>Автомобиль</h3>
+          <div class="grid2">
+            <div><label class="l" for="brand">Марка</label><select id="brand"><option value="1">Kia / Hyundai</option><option value="1">Lada</option><option value="1.1">VW / Skoda</option><option value="1.1">Toyota / Nissan</option><option value="1.3">BMW / Mercedes / Audi</option></select></div>
+            <div><label class="l" for="cls">Тип кузова</label><select id="cls"><option value="1">Седан / хэтчбек</option><option value="1.15">Кроссовер</option><option value="1.3">Внедорожник</option></select></div>
+          </div></div>
+        <div class="panel"><h3><i>03</i>Дата и время</h3>
+          <div class="days" id="days" role="group" aria-label="Дата визита"></div>
+          <div class="times" id="times" role="radiogroup" aria-label="Время визита"></div></div>
+      </div>
+      <aside class="order" aria-live="polite">
+        <span class="mono" style="color:#666">Заказ-наряд</span>
+        <h3 style="margin-top:6px">Ваша запись</h3>
+        <div class="no" id="no">№ —</div>
+        <table><tbody id="lines"><tr><td class="empty" colspan="2">Отметьте работы слева</td></tr></tbody></table>
+        <div class="tot"><span>Итого</span><span id="sum">0 ₽</span></div>
+        <div class="when" id="when">Время не выбрано</div>
+        <form id="f" novalidate style="display:grid;gap:10px;margin-top:16px">
+          <input type="text" id="nm" placeholder="Имя" autocomplete="given-name" aria-label="Имя" style="background:#fff;color:#111;border-color:#C9CBCF">
+          <input type="tel" id="ph" placeholder="+7 900 000-00-00" autocomplete="tel" aria-label="Телефон" style="background:#fff;color:#111;border-color:#C9CBCF">
+          <p class="err" id="err" role="alert"></p>
+          <button class="btn btn-signal" type="submit">Записаться</button>
+        </form>
+        <div class="ok" id="ok" role="status"></div>
+      </aside>
+    </div>
+  </div>
+</section>
+<section id="why" style="padding-top:20px">
+  <div class="wrap">
+    <div class="head"><h2>Почему к нам возвращаются</h2></div>
+    <div class="why">
+      <div><b>0 ₽</b><h3>за диагностику при ремонте</h3><p>Если ремонтируете у нас — проверка в подарок.</p></div>
+      <div><b>Фото</b><h3>каждой замены</h3><p>Старые детали показываем или отдаём с собой.</p></div>
+      <div><b>1 год</b><h3>гарантия на работы</h3><p>Записано в заказ-наряде, а не на словах.</p></div>
+      <div><b>15 мин</b><h3>ожидание по записи</h3><p>Если дольше — кофе и скидка 10% на следующую работу.</p></div>
+    </div>
+  </div>
+</section>
+<section id="prices" style="padding-top:20px">
+  <div class="wrap">
+    <div class="head"><h2>Цены на основные работы</h2><p>Для седанов и хэтчбеков. Для кроссоверов и премиум-марок коэффициент считается автоматически в записи.</p></div>
+    <div class="tbl"><table class="prices"><thead><tr><th>Работа</th><th>Время</th><th>Цена</th></tr></thead><tbody id="ptable"></tbody></table></div>
+  </div>
+</section>
+<div class="wrap"><footer><span>© 2026 «Гараж 24» — демо-проект для портфолио, автосервис и цены вымышленные</span><span>Дизайн и разработка — <a href="https://yarosh-anastasia.ru/">Анастасия Ярош</a></span></footer></div>
+<script>
+(function(){
+  var S=[{id:'oil',n:'Замена масла и фильтра',t:'40 мин',p:1200,m:40},{id:'diag',n:'Компьютерная диагностика',t:'30 мин',p:1500,m:30},{id:'pads',n:'Замена тормозных колодок',t:'60 мин',p:1800,m:60},{id:'tires',n:'Шиномонтаж 4 колёс',t:'45 мин',p:2400,m:45},{id:'ac',n:'Заправка кондиционера',t:'40 мин',p:2900,m:40},{id:'align',n:'Развал-схождение',t:'50 мин',p:2200,m:50}];
+  function rub(x){return Math.round(x).toLocaleString('ru-RU')+' ₽'}
+  document.getElementById('svcs').innerHTML=S.map(function(s){return '<label class="svc"><input type="checkbox" value="'+s.id+'"><span>'+s.n+'<small>'+s.t+'</small></span><span class="pr">'+rub(s.p)+'</span></label>'}).join('');
+  document.getElementById('ptable').innerHTML=S.map(function(s){return '<tr><td>'+s.n+'</td><td>'+s.t+'</td><td>от '+rub(s.p)+'</td></tr>'}).join('');
+  var days=document.getElementById('days'),times=document.getElementById('times'),dn=['вс','пн','вт','ср','чт','пт','сб'],mn=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'],sel={day:null,time:null};
+  var base=new Date();
+  for(var i=0;i<10;i++){var d=new Date(base);d.setDate(base.getDate()+i);
+    var b=document.createElement('button');b.type='button';b.className='day';b.setAttribute('aria-pressed',i===0?'true':'false');b.dataset.i=i;b.dataset.label=d.getDate()+' '+mn[d.getMonth()]+', '+dn[d.getDay()];
+    b.innerHTML='<small>'+(i===0?'сегодня':i===1?'завтра':dn[d.getDay()])+'</small><b>'+d.getDate()+'</b><small>'+mn[d.getMonth()]+'</small>';days.appendChild(b)}
+  function busy(dayI,slot){return ((dayI*7+slot*13)%5)===0}
+  function renderTimes(){var di=+days.querySelector('[aria-pressed=true]').dataset.i;sel.day=days.querySelector('[aria-pressed=true]').dataset.label;sel.time=null;
+    var h='';for(var s=0;s<18;s++){var hh=9+Math.floor(s/2),mm=s%2?'30':'00',t=String(hh).padStart(2,'0')+':'+mm,dis=busy(di,s)||(di===0&&hh<=new Date().getHours());
+      h+='<label class="time"><input type="radio" name="t" value="'+t+'"'+(dis?' disabled':'')+'><span>'+t+'</span></label>'}
+    times.innerHTML=h;update()}
+  days.addEventListener('click',function(e){var b=e.target.closest('.day');if(!b)return;days.querySelectorAll('.day').forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');renderTimes()});
+  times.addEventListener('change',function(e){sel.time=e.target.value;update()});
+  document.getElementById('svcs').addEventListener('change',update);
+  document.getElementById('brand').addEventListener('change',update);
+  document.getElementById('cls').addEventListener('change',update);
+  function update(){var k=+document.getElementById('brand').value*+document.getElementById('cls').value,sum=0,min=0,rows='';
+    document.querySelectorAll('#svcs input:checked').forEach(function(c){var s=S.find(function(x){return x.id===c.value});var p=s.p*k;sum+=p;min+=s.m;rows+='<tr><td>'+s.n+'</td><td>'+rub(p)+'</td></tr>'});
+    document.getElementById('lines').innerHTML=rows||'<tr><td class="empty" colspan="2">Отметьте работы слева</td></tr>';
+    document.getElementById('sum').textContent=rub(sum);
+    document.getElementById('when').textContent=sel.time?(sel.day+', '+sel.time+(min?' · ~'+min+' мин':'')):'Время не выбрано';}
+  renderTimes();
+  document.getElementById('f').addEventListener('submit',function(e){e.preventDefault();var err=document.getElementById('err');
+    if(!document.querySelector('#svcs input:checked')){err.textContent='Выберите хотя бы одну работу';return}
+    if(!sel.time){err.textContent='Выберите время визита';return}
+    if(!document.getElementById('nm').value.trim()){err.textContent='Напишите имя';return}
+    if(document.getElementById('ph').value.replace(/\D/g,'').length<10){err.textContent='Проверьте телефон: минимум 10 цифр';return}
+    err.textContent='';var no='G24-'+Math.floor(10000+Math.random()*89999);document.getElementById('no').textContent='№ '+no;
+    this.style.display='none';var ok=document.getElementById('ok');ok.innerHTML='<b>Записали!</b> '+sel.day+', '+sel.time+'. Демо: запись никуда не отправлена — на реальном сайте пришло бы подтверждение в Telegram и напоминание за 2 часа.';ok.classList.add('show');
+    var r=times.querySelector('input:checked');if(r){r.disabled=true}});
+})();
+</script>
+</body>
+</html>
