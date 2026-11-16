@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<title>Лак — запись онлайн (демо Mini App)</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--wine:#6E1F33;--champ:#D9B88F;--milk:#F7EDEA;--ink:#1E1B18;--mute:#8a7a76;--card:#fff;--line:#eadcd8}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif;background:var(--milk);color:var(--ink);min-height:100vh;padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+.demo{background:var(--wine);color:var(--champ);font-size:12px;text-align:center;padding:6px 10px}
+header{padding:18px 18px 8px;display:flex;align-items:center;gap:12px}
+.logo{width:44px;height:44px;border-radius:50%;background:var(--wine);color:var(--milk);display:grid;place-items:center;font:italic 20px Georgia,serif}
+.logo b{color:var(--champ)}
+h1{font:italic 26px Georgia,serif;color:var(--wine)}
+.hello{font-size:14px;color:var(--mute)}
+.steps{display:flex;gap:6px;padding:6px 18px 0}
+.steps i{flex:1;height:4px;border-radius:4px;background:var(--line);transition:.3s}
+.steps i.on{background:var(--wine)}
+section{padding:16px 18px;display:none;animation:in .25s ease}
+section.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h2{font-size:19px;margin-bottom:12px}
+.list{display:grid;gap:10px}
+.opt{background:var(--card);border:2px solid transparent;border-radius:16px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;cursor:pointer;box-shadow:0 1px 0 var(--line)}
+.opt.sel{border-color:var(--wine)}
+.opt small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
+.price{font-weight:700;color:var(--wine);white-space:nowrap}
+.master{display:flex;align-items:center;gap:12px}
+.ava{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;flex:none}
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+.day{flex:none;width:58px;padding:10px 0;border-radius:14px;background:var(--card);text-align:center;cursor:pointer;border:2px solid transparent}
+.day b{display:block;font-size:20px}.day span{font-size:12px;color:var(--mute)}
+.day.sel{border-color:var(--wine);background:#fff}
+.day.off{opacity:.35;pointer-events:none}
+.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.slot{padding:11px 0;text-align:center;border-radius:12px;background:var(--card);font-weight:600;cursor:pointer;border:2px solid transparent}
+.slot.busy{opacity:.3;text-decoration:line-through;pointer-events:none}
+.slot.sel{background:var(--wine);color:#fff}
+.sum{background:var(--card);border-radius:18px;padding:16px}
+.row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line);gap:12px}
+.row:last-child{border:0}.row span{color:var(--mute)}
+.total{font-size:20px;font-weight:800;color:var(--wine)}
+label.f{display:block;margin-top:14px;font-size:14px;color:var(--mute)}
+input,textarea{width:100%;margin-top:6px;padding:13px 14px;border-radius:12px;border:1px solid var(--line);font:inherit;background:#fff}
+.chk{display:flex;gap:10px;align-items:center;margin-top:12px;font-size:14px}
+.chk input{width:auto;margin:0}
+.ok{text-align:center;padding-top:30px}
+.ok .big{width:84px;height:84px;border-radius:50%;background:var(--wine);color:#fff;display:grid;place-items:center;font-size:40px;margin:0 auto 16px}
+.ok p{color:var(--mute);margin-top:8px;line-height:1.45}
+.bar{position:fixed;left:0;right:0;bottom:0;padding:12px 18px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--milk) 30%);display:flex;gap:10px}
+.btn{flex:1;border:0;border-radius:14px;padding:16px;font:700 16px inherit;background:var(--wine);color:#fff;cursor:pointer}
+.btn.ghost{flex:none;background:#fff;color:var(--wine);padding:16px 18px}
+.btn:disabled{opacity:.4}
+.tg .bar{display:none}.tg body,body.tg{padding-bottom:24px}
+.hint{font-size:13px;color:var(--mute);margin-top:10px}
+</style>
+</head>
+<body>
+<div class="demo">Демо Mini App для портфолио · студия вымышленная · запись не отправляется</div>
+<header><div class="logo"><span>Л<b>.</b></span></div><div><h1>Лак</h1><div class="hello" id="hello">Запись за 30 секунд</div></div></header>
+<div class="steps"><i></i><i></i><i></i><i></i></div>
+
+<section id="s0"><h2>Что делаем?</h2><div class="list" id="services"></div></section>
+<section id="s1"><h2>К кому записать?</h2><div class="list" id="masters"></div></section>
+<section id="s2"><h2>Когда удобно?</h2><div class="days" id="days"></div><div class="slots" id="slots"></div><p class="hint">Зачёркнуто — занято. Окна обновляются в реальном времени из расписания мастеров.</p></section>
+<section id="s3"><h2>Проверьте запись</h2><div class="sum" id="sum"></div>
+ <label class="f">Имя<input id="name" autocomplete="given-name"></label>
+ <label class="f">Телефон<input id="phone" type="tel" inputmode="tel" placeholder="+7"></label>
+ <label class="chk"><input type="checkbox" id="friend"> Приду с подругой — обеим −300 ₽</label>
+</section>
+<section id="s4" class="ok"><div class="big">✓</div><h2>Вы записаны!</h2><p id="okText"></p><p>За сутки до визита бот пришлёт напоминание с кнопками «Приду» и «Перенести».</p></section>
+
+<div class="bar"><button class="btn ghost" id="back">←</button><button class="btn main" id="next" disabled>Дальше</button></div>
+
+<script>
+const tg=window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initData!==undefined?Telegram.WebApp:null;
+const inTg=!!(tg&&tg.platform&&tg.platform!=='unknown');
+const S=[{id:'man',t:'Маникюр с покрытием',d:'1 ч 30 мин',p:2200},{id:'ped',t:'Педикюр',d:'1 ч 30 мин',p:2800},{id:'ext',t:'Наращивание',d:'2 ч 30 мин',p:3500},{id:'off',t:'Снятие',d:'30 мин',p:500},{id:'des',t:'Дизайн (за 2 ногтя)',d:'+15 мин',p:400}];
+const M=[{id:'a',t:'Анна',d:'Дизайн и френч · 6 лет',c:'#6E1F33'},{id:'m',t:'Мария',d:'Педикюр и укрепление · 4 года',c:'#B07A5A'},{id:'any',t:'Любой свободный мастер',d:'Подберём ближайшее окно',c:'#8a7a76'}];
+const TIMES=['10:00','11:30','13:00','14:30','16:00','17:30','19:00','20:30'];
+const st={step:0,svc:null,master:null,day:null,time:null};
+const $=s=>document.querySelector(s);
+const fmt=n=>n.toLocaleString('ru-RU')+' ₽';
+const days=[];const now=new Date();const wd=['вс','пн','вт','ср','чт','пт','сб'];
+for(let i=0;i<14;i++){const d=new Date(now);d.setDate(now.getDate()+i);days.push(d);}
+
+function opt(html,sel,on){const e=document.createElement('div');e.className='opt'+(sel?' sel':'');e.innerHTML=html;e.onclick=on;return e;}
+function haptic(){try{tg&&tg.HapticFeedback.selectionChanged()}catch(e){}}
+
+function render(){
+ document.querySelectorAll('section').forEach((s,i)=>s.classList.toggle('on',i===st.step));
+ document.querySelectorAll('.steps i').forEach((s,i)=>s.classList.toggle('on',i<=Math.min(st.step,3)));
+ const sv=$('#services');sv.innerHTML='';S.forEach(s=>sv.append(opt(`<div><b>${s.t}</b><small>${s.d}</small></div><div class="price">${fmt(s.p)}</div>`,st.svc===s,()=>{st.svc=s;haptic();render();})));
+ const ms=$('#masters');ms.innerHTML='';M.forEach(m=>ms.append(opt(`<div class="master"><div class="ava" style="background:${m.c}">${m.t[0]}</div><div><b>${m.t}</b><small>${m.d}</small></div></div>`,st.master===m,()=>{st.master=m;haptic();render();})));
+ const dv=$('#days');dv.innerHTML='';days.forEach((d,i)=>{const e=document.createElement('div');const off=d.getDay()===1&&i>0;e.className='day'+(st.day===i?' sel':'')+(off?' off':'');e.innerHTML=`<span>${i===0?'сегодня':wd[d.getDay()]}</span><b>${d.getDate()}</b>`;e.onclick=()=>{st.day=i;st.time=null;haptic();render();};dv.append(e);});
+ const sl=$('#slots');sl.innerHTML='';
+ if(st.day!==null){TIMES.forEach((t,j)=>{const busy=((st.day*5+j*3+(st.master?st.master.id.charCodeAt(0):0))%4===0)||(st.day===0&&j<3);const e=document.createElement('div');e.className='slot'+(busy?' busy':'')+(st.time===t?' sel':'');e.textContent=t;e.onclick=()=>{st.time=t;haptic();render();};sl.append(e);});}
+ if(st.step===3){const d=days[st.day];const price=st.svc.p-($('#friend').checked?300:0);
+  $('#sum').innerHTML=`<div class="row"><span>Услуга</span><b>${st.svc.t}</b></div><div class="row"><span>Мастер</span><b>${st.master.t}</b></div><div class="row"><span>Когда</span><b>${d.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})}, ${st.time}</b></div><div class="row"><span>Итого</span><b class="total">${fmt(price)}</b></div>`;}
+ const ready=[!!st.svc,!!st.master,!!st.time,$('#name').value.trim().length>1&&$('#phone').value.replace(/\D/g,'').length>=11][st.step];
+ const label=['Дальше','Дальше','Дальше','Записаться'][st.step]||'Закрыть';
+ $('#next').textContent=label;$('#next').disabled=st.step<4&&!ready;$('#back').style.visibility=st.step>0&&st.step<4?'visible':'hidden';
+ if(inTg){tg.MainButton.setText(st.step===4?'Закрыть':label);if(st.step===4||ready){tg.MainButton.enable();tg.MainButton.show();}else{tg.MainButton.disable();}
+  if(st.step>0&&st.step<4)tg.BackButton.show();else tg.BackButton.hide();}
+}
+function next(){
+ if(st.step===4){inTg?tg.close():location.reload();return;}
+ if(st.step===3){const d=days[st.day];$('#okText').textContent=`${st.svc.t} · ${st.master.t} · ${d.toLocaleDateString('ru-RU',{day:'numeric',month:'long'})} в ${st.time}`;try{tg&&tg.HapticFeedback.notificationOccurred('success')}catch(e){}}
+ st.step++;render();window.scrollTo(0,0);
+}
+function back(){if(st.step>0){st.step--;render();}}
+$('#next').onclick=next;$('#back').onclick=back;
+['#name','#phone','#friend'].forEach(s=>$(s).addEventListener('input',render));
+if(inTg){document.body.classList.add('tg');tg.ready();tg.expand();try{tg.setHeaderColor('#6E1F33');tg.setBackgroundColor('#F7EDEA');}catch(e){}
+ tg.MainButton.setParams({color:'#6E1F33',text_color:'#ffffff'});tg.MainButton.onClick(next);tg.BackButton.onClick(back);
+ const u=tg.initDataUnsafe&&tg.initDataUnsafe.user;if(u&&u.first_name){$('#hello').textContent=`${u.first_name}, запись за 30 секунд`;$('#name').value=u.first_name;}}
+render();
+</script>
+</body>
+</html>
