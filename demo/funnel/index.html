@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ДомКаркас — воронка заявок (демо-дашборд)</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--blue:#1D4E89;--wood:#C98B4A;--bg:#F4F6F9;--ink:#14202E;--mute:#6B7A8C;--line:#E2E7EE;--hot:#D9534F;--warm:#E8A33D;--cold:#7A8DA3}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,Inter,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+.demo{background:var(--blue);color:#cfe0f5;font-size:12px;text-align:center;padding:6px 10px}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 40px}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+h1{font-size:24px}h1 small{display:block;font-size:13px;color:var(--mute);font-weight:500;margin-top:4px}
+.seg{display:flex;background:#fff;border:1px solid var(--line);border-radius:12px;padding:3px}.seg button{border:0;background:none;padding:8px 14px;border-radius:9px;font:600 13px inherit;color:var(--mute);cursor:pointer}.seg button.on{background:var(--blue);color:#fff}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:14px}
+.k{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}.k span{font-size:12px;color:var(--mute)}.k b{display:block;font-size:24px;margin-top:4px}.k em{font-style:normal;font-size:12px;font-weight:700}
+.up{color:#2e9d5b}.down{color:var(--hot)}
+.row{display:grid;grid-template-columns:1.25fr 1fr;gap:14px;margin-bottom:14px}
+.box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;min-width:0}
+.box h3{font-size:15px;margin-bottom:12px;display:flex;justify-content:space-between}.box h3 span{font-size:12px;color:var(--mute);font-weight:500}
+.fn{display:grid;gap:8px}
+.fs{display:grid;grid-template-columns:150px 1fr 56px;align-items:center;gap:10px;font-size:13px}
+.fs .b{height:28px;border-radius:8px;background:var(--blue);display:flex;align-items:center;padding-left:10px;color:#fff;font-weight:700;font-size:12px;transition:width .5s;min-width:36px}
+.fs .c{color:var(--mute);font-size:12px;text-align:right}
+table{width:100%;border-collapse:collapse;font-size:13px}th{text-align:left;color:var(--mute);font-weight:600;padding:8px 6px;border-bottom:1px solid var(--line)}td{padding:9px 6px;border-bottom:1px solid #f0f2f5}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+.tag{padding:3px 8px;border-radius:20px;font-size:11px;font-weight:700;color:#fff}
+.dot{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px}
+svg{width:100%;height:190px;display:block}
+.flow{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--mute);margin-top:12px;align-items:center}.flow b{background:#eef3fa;color:var(--blue);padding:6px 10px;border-radius:8px}
+@media(max-width:860px){.kpis{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1fr}.fs{grid-template-columns:110px 1fr 46px}.hide{display:none}}
+</style></head><body>
+<div class="demo">Демо-дашборд для портфолио · компания и данные вымышленные</div>
+<div class="wrap">
+ <div class="top"><h1>Воронка заявок «ДомКаркас»<small>Сайт → квиз → Telegram-бот → CRM → договор · данные из таблицы через n8n</small></h1>
+  <div class="seg" id="per"><button data-p="7">7 дней</button><button class="on" data-p="30">30 дней</button><button data-p="90">Квартал</button></div></div>
+ <div class="kpis" id="kpis"></div>
+ <div class="row">
+  <div class="box"><h3>Воронка <span>конверсия из предыдущего шага</span></h3><div class="fn" id="fn"></div>
+   <div class="flow"><b>Сайт</b>→<b>Квиз в боте</b>→<b>n8n</b>→<b>Таблица / amoCRM</b>→<b>Дашборд</b></div></div>
+  <div class="box"><h3>Источники <span>UTM</span></h3><table id="src"></table></div>
+ </div>
+ <div class="row">
+  <div class="box"><h3>Заявки по дням <span id="lg"></span></h3><svg id="ch" viewBox="0 0 600 190" preserveAspectRatio="none"></svg></div>
+  <div class="box"><h3>Последние заявки <span>метка из квиза</span></h3><table id="leads"></table></div>
+ </div>
+</div>
+<script>
+const tg=window.Telegram&&Telegram.WebApp;if(tg&&tg.platform&&tg.platform!=='unknown'){tg.ready();tg.expand()}
+const $=s=>document.querySelector(s);const f=n=>Math.round(n).toLocaleString('ru-RU');
+const SRC=[['Яндекс Директ','#1D4E89',.42,1650],['VK Реклама','#4A7BC0',.22,1100],['Telegram-канал','#2AABEE',.14,0],['SEO','#C98B4A',.15,0],['Авито','#7A8DA3',.07,900]];
+let seed=11;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+const DAYS=90;const daily=[];for(let i=0;i<DAYS;i++){const base=38+14*Math.sin(i/9)+rnd()*14;daily.push(Math.round(base))}
+const NAMES=['Алексей К.','Марина С.','Игорь П.','Ольга Д.','Сергей Л.','Наталья В.','Дмитрий Р.','Евгения Т.','Павел М.','Анна Б.'];
+const AREA=['до 80 м²','80–120 м²','120–160 м²','от 160 м²'];
+function data(p){
+ const leads=daily.slice(-p).reduce((s,x)=>s+x,0), prev=daily.slice(-2*p,-p).reduce((s,x)=>s+x,0)||leads*.9;
+ const visits=leads*21.5, quizS=leads*2.6, quizF=leads*1.55, call=leads*.62, meas=leads*.31, deal=leads*.085;
+ return {p,leads,prev,visits,quizS,quizF,call,meas,deal};
+}
+function render(p){
+ const d=data(p);const spend=SRC.reduce((s,x)=>s+x[3]*d.leads*x[2],0)*.55;
+ const dl=(a,b,inv)=>{const v=(a/b-1)*100;return `<em class="${(v>=0)!==!!inv?'up':'down'}">${v>=0?'▲':'▼'} ${Math.abs(v).toFixed(0)}%</em>`};
+ $('#kpis').innerHTML=[['Визиты на сайт',f(d.visits),dl(d.leads,d.prev)],['Заявки',f(d.leads),dl(d.leads,d.prev)],['Горячие',f(d.leads*.18),dl(1.06,1)],['Договоры',f(d.deal),dl(1.12,1)],['Цена заявки',f(spend/d.leads)+' ₽',dl(.94,1,1)]].map(([a,b,c])=>`<div class="k"><span>${a}</span><b>${b}</b>${c}</div>`).join('');
+ const st=[['Визит на сайт',d.visits],['Начали квиз',d.quizS],['Прошли квиз',d.quizF],['Оставили контакт',d.leads],['Дозвон менеджера',d.call],['Выезд инженера',d.meas],['Договор',d.deal]];
+ $('#fn').innerHTML=st.map(([n,v],i)=>`<div class="fs"><span>${n}</span><div><div class="b" style="width:${Math.max(4,Math.pow(v/d.visits,.45)*100)}%;background:${i>4?'var(--wood)':'var(--blue)'}">${f(v)}</div></div><span class="c">${i?Math.round(v/st[i-1][1]*100)+'%':''}</span></div>`).join('');
+ $('#src').innerHTML='<tr><th>Источник</th><th class="n">Заявки</th><th class="n hide">Договоры</th><th class="n">Цена заявки</th></tr>'+SRC.map(([n,c,sh,cpl])=>`<tr><td><span class="dot" style="background:${c}"></span>${n}</td><td class="n">${f(d.leads*sh)}</td><td class="n hide">${f(d.deal*sh*(n==='SEO'?1.4:1))}</td><td class="n">${cpl?f(cpl)+' ₽':'—'}</td></tr>`).join('');
+ const arr=daily.slice(-p);const mx=Math.max(...arr)*1.1;const W=600,H=170;const pts=arr.map((v,i)=>[i/(arr.length-1)*W,H-v/mx*H+10]);
+ const path=pts.map((q,i)=>(i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)).join(' ');
+ $('#ch').innerHTML=`<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1D4E89" stop-opacity=".25"/><stop offset="1" stop-color="#1D4E89" stop-opacity="0"/></linearGradient></defs>${[0,1,2,3].map(i=>`<line x1="0" x2="600" y1="${10+i*H/3}" y2="${10+i*H/3}" stroke="#E2E7EE"/>`).join('')}<path d="${path} L600 190 L0 190Z" fill="url(#g)"/><path d="${path}" fill="none" stroke="#1D4E89" stroke-width="2.5" vector-effect="non-scaling-stroke"/>`;
+ $('#lg').textContent=`в среднем ${f(d.leads/p)} в день`;
+ const tags=[['горячий','var(--hot)'],['тёплый','var(--warm)'],['холодный','var(--cold)']];
+ $('#leads').innerHTML='<tr><th>Клиент</th><th>Площадь</th><th class="hide">Источник</th><th>Метка</th></tr>'+NAMES.slice(0,7).map((n,i)=>{const t=tags[(i*7+p)%3];return `<tr><td>${n}</td><td>${AREA[(i+p)%4]}</td><td class="hide">${SRC[(i*3)%5][0]}</td><td><span class="tag" style="background:${t[1]}">${t[0]}</span></td></tr>`}).join('');
+}
+document.querySelectorAll('#per button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#per button').forEach(x=>x.classList.toggle('on',x===b));render(+b.dataset.p)});
+render(30);
+</script></body></html>
