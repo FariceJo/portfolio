@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<title>Зерно·Точка — карта лояльности (демо Mini App)</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--roast:#241812;--milk:#F3ECE3;--cup:#2F4BFF;--crema:#C9A27E;--mute:#8b7b6e}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,Inter,Roboto,Arial,sans-serif;background:var(--milk);color:var(--roast);min-height:100vh;padding-bottom:30px}
+.demo{background:var(--roast);color:var(--crema);font-size:12px;text-align:center;padding:6px 10px}
+.tabs{display:flex;margin:14px 16px 0;background:#e6dccf;border-radius:14px;padding:4px}
+.tabs button{flex:1;border:0;background:none;padding:10px;border-radius:10px;font:600 14px inherit;color:var(--mute);cursor:pointer}
+.tabs button.on{background:#fff;color:var(--roast)}
+.card{margin:16px;border-radius:24px;background:var(--roast);color:var(--milk);padding:22px;position:relative;overflow:hidden}
+.card:after{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:var(--cup);opacity:.55}
+.brand{font-weight:800;font-size:22px;position:relative;z-index:1}.brand b{color:var(--cup)}
+.who{position:relative;z-index:1;font-size:13px;opacity:.7;margin-top:4px}
+.stamps{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:22px;position:relative;z-index:1}
+.st{aspect-ratio:1;border-radius:50%;border:2px dashed rgba(243,236,227,.35);display:grid;place-items:center;font-size:20px}
+.st.on{border:0;background:var(--crema);animation:pop .35s}
+.st.free{border:2px dashed #fff;color:#fff;font-size:10px;font-weight:800}
+.st.free.on{background:var(--cup);color:#fff}
+@keyframes pop{0%{transform:scale(.4)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+.left{position:relative;z-index:1;margin-top:14px;font-size:15px}
+.qrbox{margin:0 16px;background:#fff;border-radius:20px;padding:18px;display:flex;gap:16px;align-items:center}
+canvas{width:120px;height:120px;image-rendering:pixelated;flex:none}
+.qrbox p{font-size:14px;color:var(--mute);line-height:1.4}.qrbox b{color:var(--roast);font-size:18px;letter-spacing:.08em}
+h3{margin:22px 16px 10px;font-size:16px}
+.hist{margin:0 16px;background:#fff;border-radius:18px;padding:4px 16px}
+.h{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #eee;font-size:14px}.h:last-child{border:0}.h span{color:var(--mute)}
+.gift{margin:16px;padding:16px;border-radius:18px;background:var(--cup);color:#fff;display:none;font-weight:600}
+.gift.on{display:block;animation:pop .4s}
+.bar{margin:16px;display:grid;gap:10px}
+.btn{border:0;border-radius:14px;padding:16px;font:700 16px inherit;background:var(--roast);color:#fff;cursor:pointer}
+.btn.blue{background:var(--cup)}.btn.light{background:#fff;color:var(--roast)}
+.scan{margin:16px;aspect-ratio:1;border-radius:24px;background:#111;position:relative;overflow:hidden;display:grid;place-items:center;color:#aaa;font-size:14px}
+.scan i{position:absolute;left:12%;right:12%;height:3px;background:var(--cup);box-shadow:0 0 18px var(--cup);animation:sc 1.6s infinite alternate}
+.scan .fr{position:absolute;inset:14%;border:3px solid rgba(255,255,255,.8);border-radius:18px}
+@keyframes sc{from{top:16%}to{top:84%}}
+.ok{margin:16px;background:#fff;border-radius:18px;padding:16px;display:none}.ok.on{display:block;animation:pop .3s}
+.note{margin:12px 16px;font-size:12px;color:var(--mute);line-height:1.45}
+.view{display:none}.view.on{display:block}
+.stat{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 16px}.stat div{background:#fff;border-radius:16px;padding:14px}.stat b{font-size:24px;display:block}.stat span{font-size:12px;color:var(--mute)}
+</style></head><body>
+<div class="demo">Демо Mini App для портфолио · кофейня вымышленная · данные хранятся только в вашем браузере</div>
+<div class="tabs"><button class="on" data-v="client">Я гость</button><button data-v="barista">Я бариста</button></div>
+
+<div class="view on" id="client">
+ <div class="card"><div class="brand">Зерно<b>·</b>Точка</div><div class="who" id="who">Карта гостя</div>
+  <div class="stamps" id="stamps"></div><div class="left" id="left"></div></div>
+ <div class="gift" id="gift">🎁 Следующий кофе — бесплатно! Покажите QR-код баристе.</div>
+ <div class="qrbox"><canvas id="qr" width="25" height="25"></canvas><div><p>Покажите код на кассе</p><b id="code"></b><p style="margin-top:6px">Бариста отсканирует и начислит чашку</p></div></div>
+ <h3>История</h3><div class="hist" id="hist"></div>
+ <p class="note">В рабочей версии чашки хранятся на сервере (Supabase), начисляет только бариста из своего аккаунта, а бот присылает «Давно не заходили — держите −20%» через 14 дней без визита.</p>
+</div>
+
+<div class="view" id="barista">
+ <div class="scan" id="scanner"><div class="fr"></div><i></i><span>Наведите камеру на QR гостя</span></div>
+ <div class="bar"><button class="btn blue" id="doScan">📷 Сканировать (демо)</button></div>
+ <div class="ok" id="ok"></div>
+ <h3>Сегодня</h3><div class="stat"><div><b id="tCups">0</b><span>чашек начислено</span></div><div><b id="tFree">0</b><span>подарочных выдано</span></div></div>
+ <p class="note">В Telegram сканирование открывает родную камеру (метод showScanQrPopup). В браузере — имитация.</p>
+</div>
+
+<script>
+const tg=window.Telegram&&Telegram.WebApp; const inTg=!!(tg&&tg.platform&&tg.platform!=='unknown');
+const K='zt_card_v1'; let D; try{D=JSON.parse(localStorage.getItem(K))}catch(e){}
+if(!D){D={cups:3,hist:[{t:'Капучино',d:Date.now()-864e5*2},{t:'Флэт уайт',d:Date.now()-864e5*6},{t:'Раф',d:Date.now()-864e5*9}],code:'ZT-'+Math.random().toString(36).slice(2,6).toUpperCase(),tc:0,tf:0}}
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(D))}catch(e){}};
+const $=s=>document.querySelector(s);
+function qr(){const c=$('#qr').getContext('2d');let x=0;for(const ch of D.code)x=(x*31+ch.charCodeAt(0))>>>0;const r=()=>(x=(x*1103515245+12345)>>>0)/4294967296;c.fillStyle='#fff';c.fillRect(0,0,25,25);c.fillStyle='#241812';
+for(let i=0;i<25;i++)for(let j=0;j<25;j++)if(r()>.52)c.fillRect(i,j,1,1);
+[[0,0],[18,0],[0,18]].forEach(([a,b])=>{c.fillStyle='#241812';c.fillRect(a,b,7,7);c.fillStyle='#fff';c.fillRect(a+1,b+1,5,5);c.fillStyle='#241812';c.fillRect(a+2,b+2,3,3);});}
+function render(){
+ const s=$('#stamps');s.innerHTML='';for(let i=0;i<6;i++){const e=document.createElement('div');const free=i===5;e.className='st'+(i<D.cups?' on':'')+(free?' free':'');e.textContent=free?(i<D.cups?'🎁':'FREE'):(i<D.cups?'☕':'');s.append(e);}
+ $('#left').textContent=D.cups>=6?'Подарок ждёт вас!':`Ещё ${5-D.cups} ${['чашек','чашка','чашки','чашки','чашки'][Math.min(5-D.cups,4)]} — и шестая в подарок`;
+ if(D.cups===5)$('#left').textContent='Следующая чашка — бесплатно!';
+ $('#gift').classList.toggle('on',D.cups>=5);
+ $('#code').textContent=D.code;
+ $('#hist').innerHTML=D.hist.slice(0,6).map(h=>`<div class="h"><b>${h.t}</b><span>${new Date(h.d).toLocaleDateString('ru-RU',{day:'numeric',month:'short'})}</span></div>`).join('');
+ $('#tCups').textContent=D.tc;$('#tFree').textContent=D.tf;
+}
+function award(){
+ const drinks=['Капучино','Латте','Флэт уайт','Эспрессо','Раф','Фильтр'];const t=drinks[Math.floor(Math.random()*drinks.length)];
+ let msg;
+ if(D.cups>=5){D.cups=0;D.tf++;D.hist.unshift({t:t+' — подарок 🎁',d:Date.now()});msg=`🎁 Гость <b>${D.code}</b> получил бесплатный ${t.toLowerCase()}. Карта обнулена.`;}
+ else{D.cups++;D.tc++;D.hist.unshift({t,d:Date.now()});msg=`✅ Начислена чашка гостю <b>${D.code}</b>: ${D.cups} из 6.${D.cups===5?' Следующая — бесплатно.':''}`;}
+ save();render();const o=$('#ok');o.innerHTML=msg;o.classList.remove('on');void o.offsetWidth;o.classList.add('on');
+ try{tg.HapticFeedback.notificationOccurred('success')}catch(e){}
+}
+$('#doScan').onclick=()=>{
+ if(inTg&&tg.showScanQrPopup){try{tg.showScanQrPopup({text:'Отсканируйте QR гостя'},()=>{tg.closeScanQrPopup();award();return true});return;}catch(e){}}
+ award();
+};
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id===b.dataset.v));render();});
+if(inTg){tg.ready();tg.expand();try{tg.setHeaderColor('#241812');tg.setBackgroundColor('#F3ECE3')}catch(e){}const u=tg.initDataUnsafe&&tg.initDataUnsafe.user;if(u)$('#who').textContent='Карта гостя · '+u.first_name;}
+qr();render();save();
+</script></body></html>
